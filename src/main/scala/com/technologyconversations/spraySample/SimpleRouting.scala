@@ -1,12 +1,33 @@
 package com.technologyconversations.spraySample
 
-import spray.routing.SimpleRoutingApp
+import spray.routing._
 import akka.actor.ActorSystem
+import spray.httpx.SprayJsonSupport._
+import spray.json._
+
+import BookProtocol._
 
 object SimpleRouting extends App with SimpleRoutingApp {
   implicit val system = ActorSystem("simpleRoutingSystem")
 
   startServer(interface = "localhost", port = 8080) {
+    path("json") {
+      get {
+        complete {
+//          val source = """{ "some": "JSON source" }"""
+//          println(source)
+//          val jsonAst = source.parseJson // or JsonParser(source)
+//          println(jsonAst.prettyPrint)
+
+//          val json = Book(123, "My Book", "My Image").toJson
+//          println(json)
+//          val book = json.convertTo[Book]
+//          println(book)
+
+          Book(123, "My Book", "My Image")
+        }
+      }
+    } ~
     path("simpleRouting") {
       get {
         complete {
