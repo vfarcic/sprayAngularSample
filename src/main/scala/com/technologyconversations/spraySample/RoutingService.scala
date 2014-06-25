@@ -21,12 +21,14 @@ trait RoutingService extends HttpService {
 
   implicit def executionContext = actorRefFactory.dispatcher
   val logActor = actorRefFactory.actorOf(Props[LogActor])
+  val logActorJava = actorRefFactory.actorOf(Props[LogAkkaJava.LogActorJava])
   val applicationPath = new File("").getAbsolutePath
 
   val route = {
     pathPrefix("api" / "v1" / "books") {
       authenticate(BasicAuth(myUserPassAuthenticator _, realm = "secure site")) { userName =>
         logActor ! LogMessage(s"$userName has been authenticated")
+        logActorJava ! new LogAkkaJava.LogMessageJava(userName + "  has been authenticated")
         path(IntNumber) { id =>
           get {
             complete {
@@ -59,8 +61,8 @@ trait RoutingService extends HttpService {
   }
 
   def myUserPassAuthenticator(userPass: Option[UserPass]): Future[Option[String]] = Future {
-    if (userPass.exists(up => up.user == "administrator" && up.pass == "welcome")) Some("Administrator")
-    else if (userPass.exists(up => up.user == "vfarcic" && up.pass == "welcome")) Some("Viktor Farcic")
+    if (userPass.exists(up => up.user == "administrator3" && up.pass == "welcome")) Some("Administrator")
+    else if (userPass.exists(up => up.user == "vfarcic2" && up.pass == "welcome")) Some("Viktor Farcic")
     else None
   }
 
