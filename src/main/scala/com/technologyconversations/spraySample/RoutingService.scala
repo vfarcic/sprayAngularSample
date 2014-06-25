@@ -26,18 +26,18 @@ trait RoutingService extends HttpService {
 
   val route = {
     pathPrefix("api" / "v1" / "books") {
-      authenticate(BasicAuth(myUserPassAuthenticator _, realm = "secure site")) { userName =>
+      authenticate(BasicAuth(userPassAuthenticator _, realm = "secure site")) { userName =>
         logActor ! LogMessage(s"$userName has been authenticated")
         logActorJava ! new LogAkkaJava.LogMessageJava(userName + "  has been authenticated")
         path(IntNumber) { id =>
           get {
             complete {
-              BookOperations.get(id)
+              BookOperations.get(id).get
             }
           } ~ delete {
             authorize(hasPermissionsToDeleteBook(userName)) {
               complete {
-                BookOperations.delete(id)
+                BookOperations.delete(id).get
               }
             }
           }
@@ -60,9 +60,9 @@ trait RoutingService extends HttpService {
     }
   }
 
-  def myUserPassAuthenticator(userPass: Option[UserPass]): Future[Option[String]] = Future {
-    if (userPass.exists(up => up.user == "administrator3" && up.pass == "welcome")) Some("Administrator")
-    else if (userPass.exists(up => up.user == "vfarcic2" && up.pass == "welcome")) Some("Viktor Farcic")
+  def userPassAuthenticator(userPass: Option[UserPass]): Future[Option[String]] = Future {
+    if (userPass.exists(up => up.user == "administrator" && up.pass == "welcome")) Some("administrator")
+    else if (userPass.exists(up => up.user == "john" && up.pass == "doe")) Some("john")
     else None
   }
 

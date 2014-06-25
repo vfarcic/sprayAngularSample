@@ -13,7 +13,7 @@ object BookProtocol extends DefaultJsonProtocol {
 
 object BookOperations {
 
-  var booksMap: scala.collection.mutable.Map[Int, Book] = collection.mutable.Map() ++ 10.to(99).map { n =>
+  var booksMap: Map[Int, Book] = 10.to(99).map { n =>
     n -> Book(n, s"image$n", s"title$n", s"author$n", n.toDouble, s"/api/v1/books/$n")
   }.toMap
 
@@ -26,18 +26,22 @@ object BookOperations {
   }
 
   def save(book: Book) = {
-    booksMap += (book.id -> book)
+    booksMap = booksMap + (book.id -> book)
     book
   }
 
-  def delete(id: Int) = {
-    val book = booksMap(id)
+  def delete(id: Int): Option[Book] = {
+    val book = booksMap.get(id)
     booksMap -= id
     book
   }
 
-  def get(id: Int): Book = {
-    booksMap(id)
+  def deleteAll {
+    booksMap = Map()
+  }
+
+  def get(id: Int): Option[Book] = {
+    booksMap.get(id)
   }
 
 }
