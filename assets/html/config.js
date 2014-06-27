@@ -3,12 +3,16 @@ angular.module('configModule', ['ngTable'])
         function($routeProvider, $locationProvider) {
             $locationProvider.html5Mode(true);
             $routeProvider
-                .when('/assets/html/index.html', {
+                .when('/page/home', {
+                    templateUrl: '/assets/html/home/home.tmpl.html',
+                    controller: 'homeCtrl'
+                })
+                .when('/page/books', {
                     templateUrl: '/assets/html/books/books.tmpl.html',
                     controller: 'booksCtrl'
                 })
                 .otherwise({
-                    redirectTo: '/assets/html/index.html'
+                    redirectTo: '/page/home'
                 });
         }
     ]);

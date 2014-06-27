@@ -57,8 +57,10 @@ trait RoutingService extends HttpService {
       }
     } ~ pathPrefix("assets") {
       getFromDirectory(s"$applicationPath/assets/")
-    } ~ pathEnd {
-      getFromFile("assets/html/index.html")
+    } ~ pathPrefix("page") {
+      getFromFile(s"$applicationPath/assets/html/index.html")
+    } ~ pathSingleSlash {
+      getFromFile(s"$applicationPath/assets/html/index.html")
     }
   }
 
