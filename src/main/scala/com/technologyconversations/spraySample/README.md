@@ -23,13 +23,20 @@ sbt ~re-start
 Presentation (AngularJS & Bootstrap CSS)
 ----------------------------------------
 
+### [http://localhost:8080/](Navigation)
+
+Navigation bar on top that adapts to the size of the screen
+
+### [http://localhost:8080/page/books](Validation)
+
+
+
 
 
 TODO
 ----
 
 **Presentation**
-Navigation
 Office export
 Validations
 Signing
