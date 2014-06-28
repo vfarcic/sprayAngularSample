@@ -1,6 +1,7 @@
 package com.technologyconversations.spraySample
 
 import spray.json.DefaultJsonProtocol
+import scala.slick.driver.H2Driver.simple._
 
 case class BookReduced(id: Int, title: String, link: String)
 

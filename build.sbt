@@ -22,7 +22,8 @@ libraryDependencies ++= {
     "com.typesafe.akka"   %%  "akka-actor"    % akkaV,
     "com.typesafe.akka"   %%  "akka-testkit"  % akkaV     % "test",
     "org.specs2"          %%  "specs2-core"   % "2.3.12"  % "test",
-    "org.specs2"          %%  "specs2-mock"   % "2.3.12"  % "test"
+    "org.specs2"          %%  "specs2-mock"   % "2.3.12"  % "test",
+    "com.typesafe.slick"  %%  "slick"         % "2.0.0"
   )
 }
 

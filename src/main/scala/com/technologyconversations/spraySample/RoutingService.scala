@@ -9,6 +9,8 @@ import BookProtocol._
 import spray.routing.authentication.{UserPass, BasicAuth}
 
 import scala.concurrent.Future
+import scala.slick.driver.H2Driver.simple._
+
 
 class RoutingServiceActor extends Actor with RoutingService {
 
