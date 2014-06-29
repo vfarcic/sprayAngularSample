@@ -4,6 +4,8 @@ Spray & Angular sample
 Running
 -------
 
+Make sure that MongoDB is up and running on localhost on port 27017.
+
 To run the application execute:
 
 ```bash
@@ -117,6 +119,14 @@ Bootstrap grid system...
     </div>
 ```
 
+Data and Backend
+----------------
+
+### [Persistence](http://localhost:8080/page/books)
+
+Mongo DB with Casbah and Salat
+
+
 
 TODO
 ----
@@ -145,7 +155,6 @@ Rules engine
 Services composition
 
 **Data and Backend**
-Persistence
 Email server
 SMS Service
 Documents management

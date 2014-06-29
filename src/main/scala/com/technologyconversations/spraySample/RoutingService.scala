@@ -9,9 +9,8 @@ import BookProtocol._
 import spray.routing.authentication.{UserPass, BasicAuth}
 
 import scala.concurrent.Future
-import scala.slick.driver.H2Driver.simple._
 
-
+//TODO Test
 class RoutingServiceActor extends Actor with RoutingService {
 
   def actorRefFactory = context
@@ -19,12 +18,14 @@ class RoutingServiceActor extends Actor with RoutingService {
 
 }
 
+//TODO Test
 trait RoutingService extends HttpService {
 
   implicit def executionContext = actorRefFactory.dispatcher
   val logActor = actorRefFactory.actorOf(Props[LogActor])
   val logActorJava = actorRefFactory.actorOf(Props[LogAkkaJava.LogActorJava])
   val applicationPath = new File("").getAbsolutePath
+  val bookRegistry = new BookRegistry
 
   val route = {
     pathPrefix("api" / "v1" / "books") {
@@ -51,7 +52,7 @@ trait RoutingService extends HttpService {
           } ~ put {
             entity(as[Book]) { book =>
               complete {
-                BookOperations.save(book)
+                bookRegistry.bookDao.save(book)
               }
             }
           }
