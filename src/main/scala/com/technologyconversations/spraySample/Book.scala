@@ -5,15 +5,13 @@ import java.io.File
 import akka.actor.Props
 import com.mongodb.casbah.MongoClient
 import com.mongodb.casbah.commons.MongoDBObject
-import com.technologyconversations.spraySample.MessageProtocol._
-import com.typesafe.config.{Config, ConfigFactory}
-import spray.json.DefaultJsonProtocol
 import com.novus.salat._
 import com.novus.salat.global._
 import com.mongodb.casbah.Imports._
 import spray.routing.HttpService
-import spray.routing.PathMatchers.IntNumber
 import spray.routing.authentication.{UserPass, BasicAuth}
+import Protocols._
+import spray.httpx.SprayJsonSupport._
 
 import scala.concurrent.Future
 
