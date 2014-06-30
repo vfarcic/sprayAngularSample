@@ -167,7 +167,7 @@ class LogActor extends Actor {
 }
 ```
 
-[RoutingService.scala]
+[Book.scala]
 ```scala
 logActor ! LogMessage(s"$userName has been authenticated")
 ```
@@ -176,7 +176,7 @@ logActor ! LogMessage(s"$userName has been authenticated")
 
 Spray routing
 
-[RoutingService.scala]
+[Book.scala]
 ```scala
 pathPrefix("api" / "v1" / "books") {
   path(IntNumber) { id =>
@@ -193,7 +193,7 @@ Transversal Services
 
 ### [Security](http://localhost:8080/page/books)
 
-[RoutingService.scala]
+[Book.scala]
 ```scala
 pathPrefix("api" / "v1" / "books") {
   authenticate(BasicAuth(userPassAuthenticator _, realm = "secure site")) { userName =>
@@ -232,6 +232,17 @@ implicit def routingExceptionHandler() = ExceptionHandler {
 }
 ```
 
+[Book.scala]
+```
+  ...
+  } ~ path("exception") {
+    complete {
+      throw new ArithmeticException
+      Message("Request completed", "OK")
+    }
+    ...
+```
+
 
 TODO
 ----
@@ -267,6 +278,7 @@ Documents management
 **Transversal Services**
 Internationalization
 "Trazas"
+TODO Continue
 Logging
 Monitorization
 Master data
