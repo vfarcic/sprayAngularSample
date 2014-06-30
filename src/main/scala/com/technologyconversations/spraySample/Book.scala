@@ -9,11 +9,8 @@ import com.novus.salat._
 import com.novus.salat.global._
 import com.mongodb.casbah.Imports._
 import spray.routing.HttpService
-import spray.routing.authentication.{UserPass, BasicAuth}
 import Protocols._
 import spray.httpx.SprayJsonSupport._
-
-import scala.concurrent.Future
 
 //TODO Test
 case class BookReduced(_id: Int, title: String, link: String)
@@ -31,52 +28,32 @@ trait BookDaoComponent {
     val client = MongoClient(settings.dbHost, settings.dbPort)
     val db = client(settings.dbName)
     val collection = db(settings.dbCollectionBooks)
-    def list: List[DBObject] = {
-      collection.find().toList
+    def list: List[BookReduced] = {
+      collection.find().toList.map(grater[BookReduced].asObject(_))
     }
-    def save(book: DBObject) = {
-      val query = MongoDBObject("_id" -> book.get("_id"))
-      collection.update(query, book, upsert = true)
+    def save(book: Book): Book = {
+      val query = MongoDBObject("_id" -> book._id)
+      val dbObject = grater[Book].asDBObject(book)
+      collection.update(query, dbObject, upsert = true)
+      book
     }
-    def delete(id: Int): Option[DBObject] = {
-      collection.findAndRemove(MongoDBObject("_id" -> id))
+    def delete(id: Int): Book = {
+      val dbObject = collection.findAndRemove(MongoDBObject("_id" -> id))
+      grater[Book].asObject(dbObject.getOrElse(DBObject.empty))
     }
     def deleteAll() {
       collection.remove(MongoDBObject.empty)
     }
-    def get(id: Int): Option[DBObject] = {
-      collection.findOne(MongoDBObject("_id" -> id))
-    }
-  }
-}
-
-// TODO Test
-trait BookServiceComponent { this: BookDaoComponent =>
-  val bookService: BookService
-  class BookService {
-    def list: List[BookReduced] = {
-      bookDao.list.map(grater[BookReduced].asObject(_))
-    }
-    def save(book: Book): Book = {
-      bookDao.save(grater[Book].asDBObject(book))
-      book
-    }
-    def delete(id: Int): Book = {
-      grater[Book].asObject(bookDao.delete(id).getOrElse(DBObject.empty))
-    }
-    def deleteAll() {
-      bookDao.deleteAll()
-    }
     def get(id: Int): Book = {
-      grater[Book].asObject(bookDao.get(id).getOrElse(DBObject.empty))
+      val dbObject = collection.findOne(MongoDBObject("_id" -> id))
+      grater[Book].asObject(dbObject.getOrElse(DBObject.empty))
     }
   }
 }
 
 // TODO Test
-class BookRegistry extends BookDaoComponent with BookServiceComponent {
+class BookRegistry extends BookDaoComponent {
   override val bookDao = new BookDao
-  override val bookService = new BookService
 }
 
 //TODO Test
@@ -87,21 +64,22 @@ trait BookRouting extends HttpService {
   val logActorJava = actorRefFactory.actorOf(Props[LogAkkaJava.LogActorJava])
   val applicationPath = new File("").getAbsolutePath
   val bookRegistry = new BookRegistry
+  val auth = new Authentificator(actorRefFactory).basicAuth
 
   val bookRoute = {
     pathPrefix("api" / "v1" / "books") {
-      authenticate(BasicAuth(userPassAuthenticator _, realm = "secure site")) { userName =>
+      authenticate(auth) { userName =>
         logActor ! LogMessage(s"$userName has been authenticated")
         logActorJava ! new LogAkkaJava.LogMessageJava(userName + "  has been authenticated")
         path(IntNumber) { id =>
           get {
             complete {
-              bookRegistry.bookService.get(id)
+              bookRegistry.bookDao.get(id)
             }
           } ~ delete {
             authorize(hasPermissionsToDeleteBook(userName)) {
               complete {
-                bookRegistry.bookService.delete(id)
+                bookRegistry.bookDao.delete(id)
               }
             }
           }
@@ -113,17 +91,17 @@ trait BookRouting extends HttpService {
         } ~ pathEnd {
           get {
             complete {
-              bookRegistry.bookService.list
+              bookRegistry.bookDao.list
             }
           } ~ put {
             entity(as[Book]) { book =>
               complete {
-                bookRegistry.bookService.save(book)
+                bookRegistry.bookDao.save(book)
               }
             }
           } ~ delete {
             complete {
-              bookRegistry.bookService.deleteAll()
+              bookRegistry.bookDao.deleteAll()
               List[Book]()
             }
           }
@@ -138,13 +116,7 @@ trait BookRouting extends HttpService {
     }
   }
 
-  // TODO Switch to DB
-  def userPassAuthenticator(userPass: Option[UserPass]): Future[Option[String]] = Future {
-    if (userPass.exists(up => up.user == "administrator" && up.pass == "welcome")) Some("administrator")
-    else if (userPass.exists(up => up.user == "john" && up.pass == "doe")) Some("john")
-    else None
-  }
-
+  // TODO Change to DB
   def hasPermissionsToDeleteBook(userName: String) = userName == "administrator"
 
 }

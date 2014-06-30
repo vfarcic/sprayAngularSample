@@ -195,9 +195,12 @@ Transversal Services
 
 [Book.scala]
 ```scala
-pathPrefix("api" / "v1" / "books") {
-  authenticate(BasicAuth(userPassAuthenticator _, realm = "secure site")) { userName =>
-...
+val auth = new Authentificator(actorRefFactory).basicAuth
+
+val bookRoute = {
+  pathPrefix("api" / "v1" / "books") {
+    authenticate(auth) { userName =>
+    ...
 ```
 
 ### [Properties management]
