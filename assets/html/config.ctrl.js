@@ -1,3 +1,4 @@
+// TODO Test
 angular.module('configModule', ['ngTable'])
     .config(['$routeProvider', '$locationProvider',
         function($routeProvider, $locationProvider) {

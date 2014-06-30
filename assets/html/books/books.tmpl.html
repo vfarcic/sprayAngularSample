@@ -4,13 +4,16 @@
             <table id="books" ng-table="tableParams" class="table table-condensed table-striped table-hover ng-table-responsive">
                 <thead>
                 <tr>
-                    <th><a id="newBook" href="#" ng-click="newBook()">New Book</a></th>
+                    <th>
+                        <button class="btn btn-primary" id="newBook" ng-click="newBook()" type="button">New Book</button>
+                        <button class="btn btn-primary" id="deleteAllBooks" ng-click="deleteAllBooks()" type="button">Delete All Books</button>
+                    </th>
                 </tr>
                 </thead>
                 <tbody ng-repeat="book in $data">
                 <tr>
                     <td>
-                        <a id="books{{$index + 1}}" href="#" ng-click="openBook(book.id)">{{book.title}}</a>
+                        <a id="books{{$index + 1}}" href="#" ng-click="openBook(book._id)">{{book.title}}</a>
                     </td>
                 </tr>
                 </tbody>
@@ -21,7 +24,7 @@
             <form class="form-horizontal" role="form" id="bookForm" name="bookForm" novalidate="novalidate">
                 <div class="form-group" ng-class="cssClass(bookForm.bookId)">
                     <label for="bookId">ID</label>
-                    <input id="bookId" name="bookId" class="form-control" type="number" ng-model="book.id" placeholder="Book ID" required="true">
+                    <input id="bookId" name="bookId" class="form-control" type="number" ng-model="book._id" placeholder="Book ID" required="true">
                 </div>
                 <div class="form-group" ng-class="cssClass(bookForm.title)">
                     <label for="bookTitle">Title</label>

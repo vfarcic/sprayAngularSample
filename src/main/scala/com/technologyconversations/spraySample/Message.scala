@@ -1,0 +1,11 @@
+package com.technologyconversations.spraySample
+
+import spray.json.DefaultJsonProtocol
+
+// TODO Test
+case class Message(message: String, status: String)
+
+// TODO Test
+object MessageProtocol extends DefaultJsonProtocol {
+  implicit val messageFormat = jsonFormat2(Message)
+}

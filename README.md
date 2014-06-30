@@ -119,13 +119,118 @@ Bootstrap grid system...
     </div>
 ```
 
-Data and Backend
-----------------
+Data and Backend (Mongo DB)
+---------------------------
 
 ### [Persistence](http://localhost:8080/page/books)
 
 Mongo DB with Casbah and Salat
 
+[Book.scala]
+```scala
+def list: List[DBObject] = {
+  collection.find().toList
+}
+...
+def list: List[BookReduced] = {
+  bookDao.list.map(grater[BookReduced].asObject(_))
+}
+```
+
+Integration (Akka / Spray)
+--------------------------
+
+### [Web Services](http://localhost:8080/page/books)
+
+REST/JSON Web Services with Spray JSON
+
+[Protocols.scala]
+```scala
+object Protocols extends DefaultJsonProtocol {
+  implicit val bookFormat = jsonFormat6(Book)
+  implicit val bookReducedFormat = jsonFormat3(BookReduced)
+  ...
+}
+```
+
+### [Messaging / (partial) Service Bus](http://localhost:8080/page/books)
+
+Akka messages
+
+[LogActor.scala]
+```scala
+class LogActor extends Actor {
+  def receive = {
+    case LogMessage(message) => println(s"Following message has been logged: $message")
+    case _                   => println("This message is not supported")
+  }
+}
+```
+
+[RoutingService.scala]
+```scala
+logActor ! LogMessage(s"$userName has been authenticated")
+```
+
+### [Routing](http://localhost:8080/page/books)
+
+Spray routing
+
+[RoutingService.scala]
+```scala
+pathPrefix("api" / "v1" / "books") {
+  path(IntNumber) { id =>
+    get {
+      complete {
+        bookRegistry.bookService.get(id)
+      }
+    } ~ delete {
+    ...
+```
+
+Transversal Services
+--------------------
+
+### [Security](http://localhost:8080/page/books)
+
+[RoutingService.scala]
+```scala
+pathPrefix("api" / "v1" / "books") {
+  authenticate(BasicAuth(userPassAuthenticator _, realm = "secure site")) { userName =>
+...
+```
+
+### [Properties management]
+
+typesafe config
+
+[Settings.scala]
+```scala
+class Settings(config: Config) {
+  ...
+  val dbHost = config.getString("sample-app.db.host")
+  val dbPort = config.getInt("sample-app.db.port")
+  ...
+}
+```
+
+[Book.scala]
+```scala
+val client = MongoClient(settings.dbHost, settings.dbPort)
+```
+
+### [Exceptions management]
+
+Spray routing
+
+[RoutingService.scala]
+```scala
+implicit def routingExceptionHandler() = ExceptionHandler {
+  case e: ArithmeticException => requestUri { uri =>
+    complete(BadRequest, Message(s"Request $uri was NOT completed", "NOK"))
+  }
+}
+```
 
 
 TODO
@@ -159,17 +264,8 @@ Email server
 SMS Service
 Documents management
 
-**Integration**
-Web Services
-Messaging
-Service Bus
-Routing
-
 **Transversal Services**
-Security
-Properties management
 Internationalization
-Exceptions management
 "Trazas"
 Logging
 Monitorization

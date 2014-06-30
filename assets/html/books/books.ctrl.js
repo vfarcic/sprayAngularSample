@@ -1,7 +1,9 @@
+// TODO Test
 angular.module('booksModule', ['ngTable'])
     .controller('booksCtrl', ['$scope', '$http', 'ngTableParams',
         function ($scope, $http, ngTableParams) {
             $scope.listBooks = function() {
+                // TODO Skip asking server after PUT or DELETE requests
                 $http.get('/api/v1/books').then(function(response) {
                     $scope.books = response.data;
                     $scope.setTableParams();
@@ -18,7 +20,7 @@ angular.module('booksModule', ['ngTable'])
                 $scope.originalBook = angular.copy($scope.book);
             };
             $scope.saveBook = function() {
-                $scope.book.link = '/api/v1/books/' + $scope.book.id;
+                $scope.book.link = '/api/v1/books/' + $scope.book._id;
                 $http.put('/api/v1/books', $scope.book).then(function() {
                     $scope.listBooks();
                     $scope.newBook();
@@ -28,9 +30,14 @@ angular.module('booksModule', ['ngTable'])
                 $scope.book = angular.copy($scope.originalBook);
             };
             $scope.deleteBook = function() {
-                $http.delete('/api/v1/books/' + $scope.book.id).then(function() {
+                $http.delete('/api/v1/books/' + $scope.book._id).then(function() {
                     $scope.listBooks();
                     $scope.newBook();
+                });
+            };
+            $scope.deleteAllBooks = function() {
+                $http.delete('/api/v1/books').then(function() {
+                    $scope.listBooks();
                 });
             };
             $scope.cssClass = function(ngModelController) {
@@ -52,7 +59,7 @@ angular.module('booksModule', ['ngTable'])
                 return !angular.equals($scope.book, $scope.originalBook);
             };
             $scope.canDeleteBook = function() {
-                return (typeof $scope.book !== 'undefined' && typeof $scope.book.id !== 'undefined');
+                return (typeof $scope.book !== 'undefined' && typeof $scope.book._id !== 'undefined');
             };
             $scope.pricePattern = function() {
                 return (/^[\d]+\.*(\d)*$/);
