@@ -12,5 +12,6 @@ class Settings(config: Config) {
   val dbPort = config.getInt("sample-app.db.port")
   val dbName = config.getString("sample-app.db.name")
   val dbCollectionBooks = config.getString("sample-app.db.collections.books")
+  val dbCollectionAudit = config.getString("sample-app.db.collections.audit")
 }
 

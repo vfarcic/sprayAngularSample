@@ -1,6 +1,6 @@
 package com.technologyconversations.spraySample
 
-import akka.actor.ActorRefFactory
+import akka.actor.{Props, ActorRefFactory}
 import spray.routing.authentication.{BasicAuth, UserPass}
 
 import scala.concurrent.Future
@@ -9,11 +9,21 @@ import scala.concurrent.Future
 class Authentificator(actorRefFactory: ActorRefFactory) {
 
   implicit def executionContext = actorRefFactory.dispatcher
+  val logActor = actorRefFactory.actorOf(Props[LogActor])
   // TODO Switch to DB
   def userPassAuthenticator(userPass: Option[UserPass]): Future[Option[String]] = Future {
-    if (userPass.exists(up => up.user == "administrator" && up.pass == "welcome")) Some("administrator")
-    else if (userPass.exists(up => up.user == "john" && up.pass == "doe")) Some("john")
-    else None
+    if (userPass.exists(up => up.user == "administrator" && up.pass == "welcome")) {
+      logActor ! AuditMessage(s"User has been authenticated")
+      Some("administrator")
+    }
+    else if (userPass.exists(up => up.user == "john" && up.pass == "doe")) {
+      logActor ! AuditMessage(s"User has been authenticated")
+      Some("john")
+    }
+    else {
+      logActor ! AuditMessage(s"User has NOT been authenticated")
+      None
+    }
   }
 
   def basicAuth = BasicAuth(userPassAuthenticator _, realm = "secure site")

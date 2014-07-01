@@ -1,3 +1,5 @@
+TODO Read "spray-caching", "spray-can", "spray-client", "spray-http", "spray-httpx", "spray-io", "spray-testkit"
+
 Spray & Angular sample
 ======================
 
@@ -157,19 +159,9 @@ object Protocols extends DefaultJsonProtocol {
 
 Akka messages
 
-[LogActor.scala]
-```scala
-class LogActor extends Actor {
-  def receive = {
-    case LogMessage(message) => println(s"Following message has been logged: $message")
-    case _                   => println("This message is not supported")
-  }
-}
-```
-
 [Book.scala]
 ```scala
-logActor ! LogMessage(s"$userName has been authenticated")
+logActor ! AuditMessage(s"This is audit message")
 ```
 
 ### [Routing](http://localhost:8080/page/books)
@@ -246,6 +238,25 @@ implicit def routingExceptionHandler() = ExceptionHandler {
     ...
 ```
 
+### Logging
+
+[LogActor.scala]
+```scala
+class LogActor extends Actor with ActorLogging {
+  def receive = {
+    case LogDebugMessage(message)   => log.debug(message)
+    case LogInfoMessage(message)    => log.info(message)
+    ...
+```
+
+[Book.scala]
+```scala
+logActor ! LogDebugMessage(s"$userName has been authenticated")
+```
+
+TODO Install SLF4J
+TODO Change "Bla bla bla" to something more meaningful
+
 
 TODO
 ----
@@ -281,8 +292,6 @@ Documents management
 **Transversal Services**
 Internationalization
 "Trazas"
-TODO Continue
-Logging
 Monitorization
 Master data
 Transactions

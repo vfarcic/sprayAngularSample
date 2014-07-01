@@ -60,17 +60,14 @@ class BookRegistry extends BookDaoComponent {
 trait BookRouting extends HttpService {
 
   implicit def executionContext = actorRefFactory.dispatcher
-  val logActor = actorRefFactory.actorOf(Props[LogActor])
-  val logActorJava = actorRefFactory.actorOf(Props[LogAkkaJava.LogActorJava])
-  val applicationPath = new File("").getAbsolutePath
   val bookRegistry = new BookRegistry
   val auth = new Authentificator(actorRefFactory).basicAuth
+  val logActor = actorRefFactory.actorOf(Props[LogActor])
 
   val bookRoute = {
     pathPrefix("api" / "v1" / "books") {
       authenticate(auth) { userName =>
-        logActor ! LogMessage(s"$userName has been authenticated")
-        logActorJava ! new LogAkkaJava.LogMessageJava(userName + "  has been authenticated")
+        logActor ! AuditMessage(s"This is audit message")
         path(IntNumber) { id =>
           get {
             complete {
@@ -107,12 +104,6 @@ trait BookRouting extends HttpService {
           }
         }
       }
-    } ~ pathPrefix("assets") {
-      getFromDirectory(s"$applicationPath/assets/")
-    } ~ pathPrefix("page") {
-      getFromFile(s"$applicationPath/assets/html/index.html")
-    } ~ pathSingleSlash {
-      getFromFile(s"$applicationPath/assets/html/index.html")
     }
   }
 

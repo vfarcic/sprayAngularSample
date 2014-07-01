@@ -6,6 +6,6 @@ import spray.json.DefaultJsonProtocol
 case class Message(message: String, status: String)
 
 // TODO Test
-object MessageProtocol extends DefaultJsonProtocol {
+object MessageProtocols extends DefaultJsonProtocol {
   implicit val messageFormat = jsonFormat2(Message)
 }
