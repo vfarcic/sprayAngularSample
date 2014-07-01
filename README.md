@@ -1,5 +1,3 @@
-TODO Read "spray-caching", "spray-can", "spray-client", "spray-http", "spray-httpx", "spray-io", "spray-testkit"
-
 Spray & Angular sample
 ======================
 
@@ -255,7 +253,6 @@ logActor ! LogDebugMessage(s"$userName has been authenticated")
 ```
 
 TODO Install SLF4J
-TODO Change "Bla bla bla" to something more meaningful
 
 
 TODO
@@ -291,6 +288,7 @@ Documents management
 
 **Transversal Services**
 Internationalization
+TODO Continue
 "Trazas"
 Monitorization
 Master data
