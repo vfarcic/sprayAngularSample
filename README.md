@@ -287,9 +287,9 @@ SMS Service
 Documents management
 
 **Transversal Services**
+**TODO Continue**
 Internationalization
-TODO Continue
-Audit TODO Delete old; add datetime
+Audit **TODO Delete old; add datetime**
 Monitorization
 Master data
 Transactions
