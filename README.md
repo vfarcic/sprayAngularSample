@@ -289,7 +289,7 @@ Documents management
 **Transversal Services**
 Internationalization
 TODO Continue
-"Trazas"
+Audit TODO Delete old; add datetime
 Monitorization
 Master data
 Transactions
@@ -349,3 +349,4 @@ Continuous integration
 RequireJS
 Revolver
 Paths (including root)
+[Akka Cluster](http://doc.akka.io/docs/akka/snapshot/scala/cluster-usage.html) & [Spray Cluster](https://github.com/ograycode/akka-spray-cluster-example)
