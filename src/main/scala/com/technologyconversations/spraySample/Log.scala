@@ -55,7 +55,6 @@ trait LogDaoComponent {
     val db = client(settings.dbName)
     val collection = db(settings.dbCollectionAudit)
     def save(auditMessage: AuditMessage): AuditMessage = {
-      println("11111111")
       val dbObject = grater[AuditMessage].asDBObject(auditMessage)
       collection.insert(dbObject)
       auditMessage

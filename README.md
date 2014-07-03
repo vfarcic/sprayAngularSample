@@ -1,6 +1,12 @@
 Spray & Angular sample
 ======================
 
+TODO
+----
+
+Skip creating Scala object in some Book cases
+
+
 Running
 -------
 
@@ -47,6 +53,8 @@ Navigation bar on top that adapts to the size of the screen
 </div>
 ```
 
+**TODO Navigation map (routeProvider)**
+
 ### [Validation](http://localhost:8080/page/books)
 
 Required (i.e. priece), pattern (i.e. price), disabled (i.e. Save)...
@@ -72,6 +80,15 @@ $scope.isValid = function(ngModelController) {
     return ngModelController.$valid && !angular.equals($scope.book, $scope.originalBook);
 };
 ```
+
+[Book.scala}
+```scala
+case class Book(_id: Int, image: String, title: String, author: String, price: Double, link: String) {
+  require(_id > 0)
+}
+```
+
+**TODO Display the error modal**
 
 ### [Invocation of services](http://localhost:8080/page/books)
 
@@ -287,8 +304,8 @@ SMS Service
 Documents management
 
 **Transversal Services**
-**TODO Continue**
 Internationalization
+**TODO Continue**
 Audit **TODO Delete old; add datetime**
 Monitorization
 Master data

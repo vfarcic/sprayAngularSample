@@ -16,7 +16,9 @@ import spray.httpx.SprayJsonSupport._
 case class BookReduced(_id: Int, title: String, link: String)
 
 //TODO Test
-case class Book(_id: Int, image: String, title: String, author: String, price: Double, link: String)
+case class Book(_id: Int, image: String, title: String, author: String, price: Double, link: String) {
+  require(!title.contains("Voldemort"))
+}
 
 // TODO Test
 trait BookDaoComponent {
