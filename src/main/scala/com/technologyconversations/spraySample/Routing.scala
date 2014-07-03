@@ -11,16 +11,16 @@ import spray.httpx.SprayJsonSupport._
 
 object Routing extends App {
   implicit val system = ActorSystem("routingSystem")
-  val service = system.actorOf(Props[RoutingServiceActor], "routingService")
+  val service = system.actorOf(Props[RoutingGeneralServiceActor], "routingService")
   IO(Http) ! Http.Bind(service, "localhost", port = 8080)
 }
 
-class RoutingServiceActor extends Actor with BookRouting with AssetsRouting with LogsRouting {
+class RoutingGeneralServiceActor extends Actor with BookRouting with AssetsRouting with LogsRouting with RoutingGeneral {
 
   def actorRefFactory = context
   def receive = runRoute(
     handleExceptions(routingExceptionHandler)
-      (assetsRoute ~ logsRoute ~ bookRoute)
+      (assetsRoute ~ logsRoute ~ bookRoute ~ generalRoute)
   )
   implicit def routingExceptionHandler() = ExceptionHandler {
     case e: ArithmeticException => requestUri { uri =>

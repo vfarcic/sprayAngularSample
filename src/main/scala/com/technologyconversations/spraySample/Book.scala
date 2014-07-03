@@ -31,6 +31,9 @@ trait BookDaoComponent {
     def list: List[BookReduced] = {
       collection.find().toList.map(grater[BookReduced].asObject(_))
     }
+    def listJson: List[DBObject] = {
+      collection.find().toList
+    }
     def save(book: Book): Book = {
       val query = MongoDBObject("_id" -> book._id)
       val dbObject = grater[Book].asDBObject(book)
@@ -59,7 +62,7 @@ class BookRegistry extends BookDaoComponent {
 //TODO Test
 trait BookRouting extends HttpService {
 
-  implicit def executionContext = actorRefFactory.dispatcher
+  implicit def booksExecutionContext = actorRefFactory.dispatcher
   val bookRegistry = new BookRegistry
   val auth = new Authentificator(actorRefFactory).basicAuth
   val logActor = actorRefFactory.actorOf(Props[LogActor])
