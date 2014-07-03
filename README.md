@@ -282,14 +282,6 @@ Visual components
 Accessibility
 Graphics
 
-**Desktop presentation**
-Sessions management
-Remote control
-Search
-Collaboration
-Notifications
-Alarms
-
 **Services**
 Workflow motor
 Batch
@@ -306,7 +298,7 @@ Documents management
 **Transversal Services**
 Internationalization
 **TODO Continue**
-Audit **TODO Delete old; add datetime**
+Audit **TODO Delete old (Akka schedule)**
 Monitorization
 Master data
 Transactions

@@ -10,12 +10,13 @@ import com.novus.salat.global._
 import spray.routing.HttpService
 import Protocols._
 import spray.httpx.SprayJsonSupport._
+import org.joda.time.DateTime
 
 
 case class LogDebugMessage(message: String)
 case class LogInfoMessage(message: String)
 case class LogErrorMessage(message: String)
-case class AuditMessage(message: String)
+case class AuditMessage(message: String, date: Long = DateTime.now().getMillis)
 
 class LogActor extends Actor with ActorLogging {
 
@@ -36,10 +37,9 @@ class LogActor extends Actor with ActorLogging {
     case LogDebugMessage(message)   => log.debug(message)
     case LogInfoMessage(message)    => log.info(message)
     case LogErrorMessage(message)   => log.error(message)
-    case auditMessage: AuditMessage => {
+    case auditMessage: AuditMessage =>
       log.info(auditMessage.message)
       logRegistry.logDao.save(auditMessage)
-    }
     case _                          => log.error("This message is not supported")
   }
 

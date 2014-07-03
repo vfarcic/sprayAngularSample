@@ -24,7 +24,8 @@ libraryDependencies ++= {
     "org.specs2"                %%  "specs2-core"   % "2.3.12"  % "test",
     "org.specs2"                %%  "specs2-mock"   % "2.3.12"  % "test",
     "org.mongodb"               %%  "casbah"        % "2.7.2",
-    "com.novus"                 %%  "salat"         % "1.9.8"
+    "com.novus"                 %%  "salat"         % "1.9.8",
+    "com.github.nscala-time"    %%  "nscala-time"   % "1.2.0"
   )
 }
 
