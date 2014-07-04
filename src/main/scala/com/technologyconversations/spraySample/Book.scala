@@ -1,9 +1,8 @@
 package com.technologyconversations.spraySample
 
-import java.io.File
-
-import akka.actor.Props
-import com.mongodb.casbah.MongoClient
+import akka.actor.{ActorLogging, Actor, Props}
+import akka.pattern.ask
+import akka.util.Timeout
 import com.mongodb.casbah.commons.MongoDBObject
 import com.novus.salat._
 import com.novus.salat.global._
@@ -11,6 +10,7 @@ import com.mongodb.casbah.Imports._
 import spray.routing.HttpService
 import Protocols._
 import spray.httpx.SprayJsonSupport._
+import scala.concurrent.duration._
 
 //TODO Test
 case class BookReduced(_id: Int, title: String, link: String)
@@ -20,54 +20,39 @@ case class Book(_id: Int, image: String, title: String, author: String, price: D
   require(!title.contains("Voldemort"))
 }
 
-// TODO Test
-trait BookDaoComponent {
-  val bookDao: BookDao
-  class BookDao(settings: Settings) {
-    def this() {
-      this(new Settings())
-    }
-    val client = MongoClient(settings.dbHost, settings.dbPort)
-    val db = client(settings.dbName)
-    val collection = db(settings.dbCollectionBooks)
-    def list: List[BookReduced] = {
-      collection.find().toList.map(grater[BookReduced].asObject(_))
-    }
-    def listJson: List[DBObject] = {
-      collection.find().toList
-    }
-    def save(book: Book): Book = {
+object BooksList
+case class BooksSave(book: Book)
+case class BooksDelete(id: Int)
+object BooksDeleteAll
+case class BooksGet(id: Int)
+class BooksActor extends Actor with ActorLogging with DbSettings {
+  val collection = db(settings.dbCollectionBooks)
+  def receive = {
+    case BooksList =>
+      sender ! collection.find().toList.map(grater[BookReduced].asObject(_))
+    case BooksSave(book) =>
       val query = MongoDBObject("_id" -> book._id)
       val dbObject = grater[Book].asDBObject(book)
-      collection.update(query, dbObject, upsert = true)
-      book
-    }
-    def delete(id: Int): Book = {
-      val dbObject = collection.findAndRemove(MongoDBObject("_id" -> id))
-      grater[Book].asObject(dbObject.getOrElse(DBObject.empty))
-    }
-    def deleteAll() {
-      collection.remove(MongoDBObject.empty)
-    }
-    def get(id: Int): Book = {
+      sender ! collection.update(query, dbObject, upsert = true)
+    case BooksDelete(id) =>
+      sender ! collection.findAndRemove(MongoDBObject("_id" -> id))
+    case BooksDeleteAll =>
+      sender ! collection.remove(MongoDBObject.empty)
+    case BooksGet(id) =>
       val dbObject = collection.findOne(MongoDBObject("_id" -> id))
-      grater[Book].asObject(dbObject.getOrElse(DBObject.empty))
-    }
+      sender ! grater[Book].asObject(dbObject.getOrElse(DBObject.empty))
+
   }
 }
 
-// TODO Test
-class BookRegistry extends BookDaoComponent {
-  override val bookDao = new BookDao
-}
-
 //TODO Test
-trait BookRouting extends HttpService {
+trait BooksRouting extends HttpService {
 
   implicit def booksExecutionContext = actorRefFactory.dispatcher
-  val bookRegistry = new BookRegistry
   val auth = new Authentificator(actorRefFactory).basicAuth
   val logActor = actorRefFactory.actorOf(Props[LogActor])
+  val booksActor = actorRefFactory.actorOf(Props[BooksActor])
+  implicit val timeout = Timeout(5 seconds)
 
   val bookRoute = {
     pathPrefix("api" / "v1" / "books") {
@@ -75,13 +60,13 @@ trait BookRouting extends HttpService {
         logActor ! AuditMessage(s"This is audit message")
         path(IntNumber) { id =>
           get {
-            complete {
-              bookRegistry.bookDao.get(id)
+            onSuccess(booksActor ? BooksGet(id)) { extraction =>
+              complete(extraction.asInstanceOf[Book])
             }
           } ~ delete {
             authorize(hasPermissionsToDeleteBook(userName)) {
-              complete {
-                bookRegistry.bookDao.delete(id)
+              onSuccess(booksActor ? BooksDelete(id)) { extraction =>
+                complete(extraction.toString)
               }
             }
           }
@@ -92,19 +77,18 @@ trait BookRouting extends HttpService {
           }
         } ~ pathEnd {
           get {
-            complete {
-              bookRegistry.bookDao.list
+            onSuccess(booksActor ? BooksList) { extraction =>
+              complete(extraction.asInstanceOf[List[BookReduced]])
             }
           } ~ put {
             entity(as[Book]) { book =>
-              complete {
-                bookRegistry.bookDao.save(book)
+              onSuccess(booksActor ? BooksSave(book)) { extraction =>
+                complete(extraction.toString)
               }
             }
           } ~ delete {
-            complete {
-              bookRegistry.bookDao.deleteAll()
-              List[Book]()
+            onSuccess(booksActor ? BooksDeleteAll) { extraction =>
+              complete(extraction.toString)
             }
           }
         }

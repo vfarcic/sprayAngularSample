@@ -176,7 +176,9 @@ Akka messages
 
 [Book.scala]
 ```scala
-logActor ! AuditMessage(s"This is audit message")
+onSuccess(booksActor ? BooksGet(id)) { extraction =>
+  complete(extraction.asInstanceOf[Book])
+}
 ```
 
 ### [Routing](http://localhost:8080/page/books)

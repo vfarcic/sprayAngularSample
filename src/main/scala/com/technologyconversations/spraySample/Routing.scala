@@ -16,7 +16,7 @@ object Routing extends App {
 }
 
 // TODO Test
-class RoutingGeneralServiceActor extends Actor with BookRouting with AssetsRouting with LogsRouting {
+class RoutingGeneralServiceActor extends Actor with BooksRouting with AssetsRouting with LogsRouting {
 
   def actorRefFactory = context
   def receive = runRoute(
