@@ -1,16 +1,12 @@
-package com.technologyconversations.spraySample
+package com.technologyconversations.spraySample.modules
 
-import java.io.File
-
-import akka.actor.{Props, Actor, ActorLogging}
-import com.mongodb.casbah.Imports._
+import akka.actor.{Actor, ActorLogging, Props}
+import akka.pattern.ask
 import com.novus.salat._
 import com.novus.salat.global._
+import org.joda.time.DateTime
 import spray.json.DefaultJsonProtocol
 import spray.routing.HttpService
-import spray.httpx.SprayJsonSupport._
-import org.joda.time.DateTime
-import akka.pattern.ask
 
 case class AuditMessage(message: String, date: Long = DateTime.now().getMillis)
 

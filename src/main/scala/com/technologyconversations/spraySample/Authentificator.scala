@@ -1,6 +1,7 @@
 package com.technologyconversations.spraySample
 
 import akka.actor.{Props, ActorRefFactory}
+import com.technologyconversations.spraySample.modules.{LogActor, AuditMessageSave, AuditMessage}
 import spray.routing.authentication.{BasicAuth, UserPass}
 
 import scala.concurrent.Future

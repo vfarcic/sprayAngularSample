@@ -2,6 +2,7 @@ package com.technologyconversations.spraySample
 
 import akka.actor.{Actor, Props, ActorSystem}
 import akka.io.IO
+import com.technologyconversations.spraySample.modules.{LogsRouting, BooksRouting, AssetsRouting}
 import spray.can.Http
 import spray.http.StatusCodes._
 import spray.json.DefaultJsonProtocol

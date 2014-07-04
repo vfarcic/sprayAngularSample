@@ -143,7 +143,7 @@ Data and Backend (Mongo DB)
 
 Mongo DB with Casbah and Salat
 
-[Book.scala]
+[Books.scala]
 ```scala
 def list: List[DBObject] = {
   collection.find().toList
@@ -174,7 +174,7 @@ object Protocols extends DefaultJsonProtocol {
 
 Akka messages
 
-[Book.scala]
+[Books.scala]
 ```scala
 onSuccess(booksActor ? BooksGet(id)) { extraction =>
   complete(extraction.asInstanceOf[Book])
@@ -185,7 +185,7 @@ onSuccess(booksActor ? BooksGet(id)) { extraction =>
 
 Spray routing
 
-[Book.scala]
+[Books.scala]
 ```scala
 pathPrefix("api" / "v1" / "books") {
   path(IntNumber) { id =>
@@ -202,7 +202,7 @@ Transversal Services
 
 ### [Security](http://localhost:8080/page/books)
 
-[Book.scala]
+[Books.scala]
 ```scala
 val auth = new Authentificator(actorRefFactory).basicAuth
 
@@ -226,7 +226,7 @@ class Settings(config: Config) {
 }
 ```
 
-[Book.scala]
+[Books.scala]
 ```scala
 val client = MongoClient(settings.dbHost, settings.dbPort)
 ```
@@ -244,7 +244,7 @@ implicit def routingExceptionHandler() = ExceptionHandler {
 }
 ```
 
-[Book.scala]
+[Books.scala]
 ```
   ...
   } ~ path("exception") {
@@ -266,12 +266,10 @@ class LogActor extends Actor with ActorLogging {
     ...
 ```
 
-[Book.scala]
+[Books.scala]
 ```scala
 logActor ! LogDebugMessage(s"$userName has been authenticated")
 ```
-
-TODO Install SLF4J
 
 
 TODO

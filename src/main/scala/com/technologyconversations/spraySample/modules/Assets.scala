@@ -1,10 +1,10 @@
-package com.technologyconversations.spraySample
+package com.technologyconversations.spraySample.modules
 
 import java.io.File
 
+import com.technologyconversations.spraySample.Message
 import spray.json.DefaultJsonProtocol
 import spray.routing.HttpService
-import spray.httpx.SprayJsonSupport._
 
 trait AssetsRouting extends HttpService with DefaultJsonProtocol {
 

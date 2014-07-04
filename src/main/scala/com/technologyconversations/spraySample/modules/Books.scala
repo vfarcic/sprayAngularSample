@@ -1,14 +1,14 @@
-package com.technologyconversations.spraySample
+package com.technologyconversations.spraySample.modules
 
-import akka.actor.{ActorLogging, Actor, Props}
+import akka.actor.{Actor, ActorLogging, Props}
 import akka.pattern.ask
+import com.mongodb.casbah.Imports._
 import com.mongodb.casbah.commons.MongoDBObject
 import com.novus.salat._
 import com.novus.salat.global._
-import com.mongodb.casbah.Imports._
+import spray.httpx.SprayJsonSupport._
 import spray.json.DefaultJsonProtocol
 import spray.routing.HttpService
-import spray.httpx.SprayJsonSupport._
 
 //TODO Test
 case class BookReduced(_id: Int, title: String, link: String)
