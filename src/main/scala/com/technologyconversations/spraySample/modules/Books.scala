@@ -6,6 +6,7 @@ import com.mongodb.casbah.Imports._
 import com.mongodb.casbah.commons.MongoDBObject
 import com.novus.salat._
 import com.novus.salat.global._
+import com.technologyconversations.spraySample.{Authentificator, DbSettings, Message}
 import spray.httpx.SprayJsonSupport._
 import spray.json.DefaultJsonProtocol
 import spray.routing.HttpService
@@ -59,7 +60,6 @@ trait BooksRouting extends HttpService with DefaultJsonProtocol {
   val bookRoute = {
     pathPrefix("api" / "v1" / "books") {
       authenticate(auth) { userName =>
-        logBookActor ! AuditMessageSave(AuditMessage(s"This is audit message"))
         path(IntNumber) { id =>
           get {
             onSuccess(booksActor ? BooksGet(id)) { extraction =>
