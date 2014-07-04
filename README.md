@@ -300,7 +300,7 @@ Documents management
 **Transversal Services**
 Internationalization
 **TODO Continue**
-Audit **TODO Delete old (Akka schedule)**
+Audit **TODO Delete old (Akka schedule); delete all**
 Monitorization
 Master data
 Transactions
@@ -361,3 +361,4 @@ RequireJS
 Revolver
 Paths (including root)
 [Akka Cluster](http://doc.akka.io/docs/akka/snapshot/scala/cluster-usage.html) & [Spray Cluster](https://github.com/ograycode/akka-spray-cluster-example)
+Bower

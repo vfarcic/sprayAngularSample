@@ -4,8 +4,8 @@ import akka.actor.{Actor, Props, ActorSystem}
 import akka.io.IO
 import spray.can.Http
 import spray.http.StatusCodes._
+import spray.json.DefaultJsonProtocol
 import spray.routing.ExceptionHandler
-import Protocols._
 import spray.httpx.SprayJsonSupport._
 
 // TODO Test
@@ -16,9 +16,11 @@ object Routing extends App {
 }
 
 // TODO Test
-class RoutingGeneralServiceActor extends Actor with BooksRouting with AssetsRouting with LogsRouting {
+class RoutingGeneralServiceActor extends Actor
+  with DefaultJsonProtocol with BooksRouting with AssetsRouting with LogsRouting {
 
   def actorRefFactory = context
+  implicit val routingMessageFormat = jsonFormat2(Message)
   def receive = runRoute(
     handleExceptions(routingExceptionHandler)
       (assetsRoute ~ logsRoute ~ bookRoute)

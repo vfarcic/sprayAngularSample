@@ -2,13 +2,14 @@ package com.technologyconversations.spraySample
 
 import java.io.File
 
+import spray.json.DefaultJsonProtocol
 import spray.routing.HttpService
-import Protocols._
 import spray.httpx.SprayJsonSupport._
 
-trait AssetsRouting extends HttpService {
+trait AssetsRouting extends HttpService with DefaultJsonProtocol {
 
   val applicationPath = new File("").getAbsolutePath
+  implicit val assetsMessageFormat = jsonFormat2(Message)
 
   val assetsRoute = {
     pathPrefix("assets") {

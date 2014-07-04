@@ -2,15 +2,13 @@ package com.technologyconversations.spraySample
 
 import akka.actor.{ActorLogging, Actor, Props}
 import akka.pattern.ask
-import akka.util.Timeout
 import com.mongodb.casbah.commons.MongoDBObject
 import com.novus.salat._
 import com.novus.salat.global._
 import com.mongodb.casbah.Imports._
+import spray.json.DefaultJsonProtocol
 import spray.routing.HttpService
-import Protocols._
 import spray.httpx.SprayJsonSupport._
-import scala.concurrent.duration._
 
 //TODO Test
 case class BookReduced(_id: Int, title: String, link: String)
@@ -46,18 +44,22 @@ class BooksActor extends Actor with ActorLogging with DbSettings {
 }
 
 //TODO Test
-trait BooksRouting extends HttpService {
+trait BooksRouting extends HttpService with DefaultJsonProtocol {
 
   implicit def booksExecutionContext = actorRefFactory.dispatcher
   val auth = new Authentificator(actorRefFactory).basicAuth
-  val logActor = actorRefFactory.actorOf(Props[LogActor])
+  val logBookActor = actorRefFactory.actorOf(Props[LogActor])
   val booksActor = actorRefFactory.actorOf(Props[BooksActor])
-  implicit val timeout = Timeout(5 seconds)
+  implicit val booksTimeout = defaultTimeout
+  implicit val booksFormat = jsonFormat6(Book)
+  implicit val booksReducedFormat = jsonFormat3(BookReduced)
+  implicit val booksMessageFormat = jsonFormat2(Message)
+
 
   val bookRoute = {
     pathPrefix("api" / "v1" / "books") {
       authenticate(auth) { userName =>
-        logActor ! AuditMessage(s"This is audit message")
+        logBookActor ! AuditMessageSave(AuditMessage(s"This is audit message"))
         path(IntNumber) { id =>
           get {
             onSuccess(booksActor ? BooksGet(id)) { extraction =>

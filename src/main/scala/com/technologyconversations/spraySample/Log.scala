@@ -2,25 +2,25 @@ package com.technologyconversations.spraySample
 
 import java.io.File
 
-import akka.actor.{Actor, ActorLogging}
+import akka.actor.{Props, Actor, ActorLogging}
 import com.mongodb.casbah.Imports._
-import com.mongodb.casbah.MongoClient
 import com.novus.salat._
 import com.novus.salat.global._
+import spray.json.DefaultJsonProtocol
 import spray.routing.HttpService
-import Protocols._
 import spray.httpx.SprayJsonSupport._
 import org.joda.time.DateTime
+import akka.pattern.ask
 
+case class AuditMessage(message: String, date: Long = DateTime.now().getMillis)
 
 case class LogDebugMessage(message: String)
 case class LogInfoMessage(message: String)
 case class LogErrorMessage(message: String)
-case class AuditMessage(message: String, date: Long = DateTime.now().getMillis)
+case class AuditMessageSave(message: AuditMessage)
+object AuditMessageList
 
-class LogActor extends Actor with ActorLogging {
-
-  val logRegistry = new LogRegistry()
+class LogActor extends Actor with ActorLogging with DbSettings {
 
   override def preStart() = {
     log.debug("Started logging")
@@ -33,52 +33,37 @@ class LogActor extends Actor with ActorLogging {
     )
   }
 
+  val collection = db(settings.dbCollectionAudit)
+
   def receive = {
     case LogDebugMessage(message)   => log.debug(message)
     case LogInfoMessage(message)    => log.info(message)
     case LogErrorMessage(message)   => log.error(message)
-    case auditMessage: AuditMessage =>
-      log.info(auditMessage.message)
-      logRegistry.logDao.save(auditMessage)
+    case AuditMessageSave(message)  =>
+      log.info(message.message)
+      val dbObject = grater[AuditMessage].asDBObject(message)
+      sender ! collection.insert(dbObject)
+    case AuditMessageList           =>
+      sender ! collection.find().toList.map(grater[AuditMessage].asObject(_))
     case _                          => log.error("This message is not supported")
   }
 
 }
 
-trait LogDaoComponent {
-  val logDao: LogDao
-  class LogDao(settings: Settings) {
-    def this() {
-      this(new Settings())
-    }
-    val client = MongoClient(settings.dbHost, settings.dbPort)
-    val db = client(settings.dbName)
-    val collection = db(settings.dbCollectionAudit)
-    def save(auditMessage: AuditMessage): AuditMessage = {
-      val dbObject = grater[AuditMessage].asDBObject(auditMessage)
-      collection.insert(dbObject)
-      auditMessage
-    }
-    def list(): List[AuditMessage] = {
-      collection.find().toList.map(grater[AuditMessage].asObject(_))
-    }
-  }
-}
+trait LogsRouting extends HttpService with DefaultJsonProtocol {
 
-// TODO Test
-class LogRegistry extends LogDaoComponent {
-  override val logDao = new LogDao
-}
-
-trait LogsRouting extends HttpService {
-
-  val logRegistry = new LogRegistry
+  val logActor = actorRefFactory.actorOf(Props[LogActor])
+  implicit def logsExecutionContext = actorRefFactory.dispatcher
+  implicit val logsTimeout = defaultTimeout
+  implicit val auditMessage = jsonFormat2(AuditMessage)
 
   val logsRoute = {
     path("logs" / "audit") {
       get {
-        complete {
-          logRegistry.logDao.list()
+        onSuccess(logActor ? AuditMessageList) { extraction =>
+          complete {
+            extraction.asInstanceOf[List[AuditMessage]]
+          }
         }
       }
     }

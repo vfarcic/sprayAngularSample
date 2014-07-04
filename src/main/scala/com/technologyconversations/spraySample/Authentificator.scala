@@ -13,15 +13,15 @@ class Authentificator(actorRefFactory: ActorRefFactory) {
   // TODO Switch to DB
   def userPassAuthenticator(userPass: Option[UserPass]): Future[Option[String]] = Future {
     if (userPass.exists(up => up.user == "administrator" && up.pass == "welcome")) {
-      logActor ! AuditMessage(s"User has been authenticated")
+      logActor ! AuditMessageSave(AuditMessage("User has been authenticated"))
       Some("administrator")
     }
     else if (userPass.exists(up => up.user == "john" && up.pass == "doe")) {
-      logActor ! AuditMessage(s"User has been authenticated")
+      logActor ! AuditMessageSave(AuditMessage("User has been authenticated"))
       Some("john")
     }
     else {
-      logActor ! AuditMessage(s"User has NOT been authenticated")
+      logActor ! AuditMessageSave(AuditMessage("User has NOT been authenticated"))
       None
     }
   }
