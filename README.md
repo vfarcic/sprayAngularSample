@@ -7,6 +7,36 @@ TODO
 Skip creating Scala object in some Book cases
 
 
+Prerequisites
+-------------
+
+### Back-end
+
+**Scala**
+**Play**
+**SBT**
+
+### Front-end
+
+**[NodeJS with NPM](http://nodejs.org/)**
+
+**[Grunt](http://gruntjs.com/)**
+
+```bash
+npm install -g grunt-cli
+```
+
+
+Dependencies
+------------
+
+Front-end dependencies can be installed by running following
+
+```bash
+cd assets
+npm install
+```
+
 Running
 -------
 
@@ -27,6 +57,16 @@ When you press <ENTER> SBT leaves "triggered restart" and returns to the normal 
 sbt ~re-start
 ```
 
+
+Unit Tests
+----------
+
+Front-end unit testing
+
+```bash
+cd public
+npm test
+```
 
 Presentation (AngularJS & Bootstrap CSS)
 ----------------------------------------
