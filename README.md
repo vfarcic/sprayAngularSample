@@ -64,9 +64,10 @@ Unit Tests
 Front-end unit testing
 
 ```bash
-cd public
+cd assets
 npm test
 ```
+
 
 Presentation (AngularJS & Bootstrap CSS)
 ----------------------------------------
