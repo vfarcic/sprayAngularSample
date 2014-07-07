@@ -28,8 +28,8 @@
         Back-end dependencies will be download first time the application is run.
         To download the front-end dependencies:
         <pre>
-            cd assets
-            npm install
+cd assets
+npm install
         </pre>
     </div>
     <h2>Running</h2>
@@ -37,13 +37,13 @@
         <div>
             MongoDB needs to be up and running:
             <pre>
-                mongod
+mongod
             </pre>
         </div>
         <div>
             To run the application:
             <pre>
-                sbt run
+sbt run
             </pre>
         </div>
         <div>
@@ -52,7 +52,7 @@
             If a change is detected SBT recompiles the required classes and sbt-revolver automatically restarts your application.
             When you press &lt;ENTER&gt; SBT leaves "triggered restart" and returns to the normal prompt keeping your application running.
             <pre>
-            sbt ~re-start
+sbt ~re-start
             </pre>
         </div>
         Once the application is running, open the <a href="http://localhost:8080" target="_blank">http://localhost:8080</a>.

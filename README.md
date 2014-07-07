@@ -1,11 +1,6 @@
 Spray & Angular sample
 ======================
 
-TODO
-----
-
-Skip creating Scala object in some Book cases
-
 
 Prerequisites
 -------------
@@ -72,29 +67,7 @@ npm test
 Presentation (AngularJS & Bootstrap CSS)
 ----------------------------------------
 
-### [Navigation](http://localhost:8080/)
-
-Navigation bar on top that adapts to the size of the screen
-
-[menu.tmpl.html]
-```html
-<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-    <ul class="nav navbar-nav">
-        <li><a href="/page/books">Books</a></li>
-        <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Themes <span class="caret"></span></a>
-            <ul class="dropdown-menu" role="menu">
-                <li ng-repeat="theme in themes"><a href="#" ng-click="changeTheme(theme.css)">{{theme.title}}</a></li>
-                <li class="divider"></li>
-                <li><a href="http://bootswatch.com/">Bootswatch (free)</a></li>
-                <li><a href="https://wrapbootstrap.com/">{wrap}bootstrap (paid)</a></li>
-            </ul>
-        </li>
-    </ul>
-</div>
-```
-
-**TODO Navigation map (routeProvider)**
+**TODO dynamic screens
 
 ### [Validation](http://localhost:8080/page/books)
 

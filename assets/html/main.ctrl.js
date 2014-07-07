@@ -2,7 +2,6 @@
 angular.module('mainModule', [
     'ngRoute',
     'configModule',
-    'homeModule',
     'booksModule'
 ])
 .controller('mainCtrl', ['$scope',

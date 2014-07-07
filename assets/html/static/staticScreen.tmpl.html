@@ -1,46 +1,55 @@
-<article>
-    <header>
-        <h1>Add New Static Screen</h1>
-    </header>
-    <div>
-        <div class="list-group">
-            <p>
-                Following steps describe how to add a new static screen that does not communicate with the back-end.
-            </p>
-            <div id="link" class="list-group-item">
-                <h3 class="list-group-item-heading">Create a link</h3>
-                <div class="list-group-item-text">
+<div class="row">
+    <ng-include src="'/assets/html/static/frontEnd.tmpl.html'"></ng-include>
+    <div class="col-md-9">
+        <article>
+            <header>
+                <h1>Front-end: static screens</h1>
+            </header>
+            <div>
+                <div class="list-group">
                     <p>
-                        Create a link to the new page with the <code>href="/page/static/[NAME]"</code>.
-                        <strong>[NAME]</strong> can be any alpha-numeric string.
-                        Spaces are not allowed.
+                        This application contains both static and dynamic screens.
+                        Static screens contain plain HTML, CSS and Javascript code that does not communicate with any server.
                     </p>
                     <p>
-                        Following example is taken from the menu.tmpl.html:
-                        <pre>
-                            &lt;li&gt;&lt;a href="/page/static/newStaticScreen"&gt;Static Screen&lt;/a&gt;&lt;/li&gt;
-                        </pre>
+                        Following steps describe how to add a new static screen.
                     </p>
+                    <div id="link" class="list-group-item">
+                        <h3 class="list-group-item-heading">Create a link</h3>
+                        <div class="list-group-item-text">
+                            <p>
+                                Create a link to the new page with the <code>href="/page/static/[NAME]"</code>.
+                                <strong>[NAME]</strong> can be any alpha-numeric string.
+                                Spaces are not allowed.
+                            </p>
+                            <p>
+                                Following example is taken from the menu.tmpl.html:
+                            </p>
+                            <pre>
+&lt;li&gt;&lt;a href="/page/static/newStaticScreen"&gt;Static Screen&lt;/a&gt;&lt;/li&gt;
+                            </pre>
+                        </div>
+                    </div>
+                    <div id="template" class="list-group-item">
+                        <h3 class="list-group-item-heading">Template</h3>
+                        <div class="list-group-item-text">
+                            <p>
+                                Create a template file named <strong>[NAME]</strong>.tmpl.html in the assets/static directory.
+                                For examples of how to write contents of the newly created file, please take a look at the existing templates in the assets/static directory.
+                            </p>
+                        </div>
+                    </div>
+                    <div id="open" class="list-group-item">
+                        <h3 class="list-group-item-heading">Open</h3>
+                        <div class="list-group-item-text">
+                            <p>
+                                Open the newly created template by navigating to the http://localhost:8080/page/static/<strong>[NAME]</strong>.
+                                The screen you are looking at right now is an example of static HTML template.
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div id="template" class="list-group-item">
-                <h3 class="list-group-item-heading">Template</h3>
-                <div class="list-group-item-text">
-                    <p>
-                        Create a template file named <strong>[NAME]</strong>.tmpl.html in the assets/static directory.
-                        For examples of how to write contents of the newly created file, please take a look at the existing templates in the assets/static directory.
-                    </p>
-                </div>
-            </div>
-            <div id="open" class="list-group-item">
-                <h3 class="list-group-item-heading">Open</h3>
-                <div class="list-group-item-text">
-                    <p>
-                        Open the newly created template by navigating to the http://localhost:8080/page/static/<strong>[NAME]</strong>.
-                        The screen you are looking at right now is an example of static HTML template.
-                    </p>
-                </div>
-            </div>
-        </div>
+        </article>
     </div>
-</article>
+</div>

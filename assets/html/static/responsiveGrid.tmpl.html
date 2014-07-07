@@ -1,0 +1,42 @@
+<div class="row">
+    <ng-include src="'/assets/html/static/frontEnd.tmpl.html'"></ng-include>
+    <div class="col-md-9">
+        <article>
+            <header>
+                <h1>Front-end: Multichannel</h1>
+            </header>
+            <div>
+                <p>
+                    Number of devices is increasing rapidly (laptops, mobiles, tablets, etc) and it is important that the application can be used across all of them.
+                    Responsive design is one of the ways this can be accomplished.
+                </p>
+                <p>
+                    <a href="http://getbootstrap.com/css/#grid">Bootstrap grid</a> is a responsive, mobile first fluid grid system that appropriately scales up to 12 columns as the device or viewport size increases.
+                    It includes predefined classes for easy layout options, as well as powerful mixins for generating more semantic layouts.
+                </p>
+                <p>
+                    Please reduce the width of the browser to see it in action.
+                    Once it the screen width becomes too small, rows are reordered depending on the size we set.
+                    Left-hand menu on this screen will move above the body.
+                    Top menu will be replaced with a button.
+                </p>
+                <h3>Grid</h3>
+                <div>
+                    <p>
+                        An example of Bootstrap grid can be seen in the code of this screen (assets/html/static/responsiveGrid.tmpl.html).
+                    </p>
+                    <pre>
+&lt;div class="row"&gt;
+    &lt;div class="col-md-3"&gt;
+        [Left-hand manu goes here]
+    &lt;/div&gt;
+    &lt;div class="col-md-9"&gt;
+        [Screen body goes here]
+    &lt;/div&gt;
+&lt;/div&gt;
+                    </pre>
+                </div>
+            </div>
+        </article>
+    </div>
+</div>

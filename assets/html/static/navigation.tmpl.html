@@ -1,0 +1,59 @@
+<div class="row">
+    <ng-include src="'/assets/html/static/frontEnd.tmpl.html'"></ng-include>
+    <div class="col-md-9">
+        <article>
+            <header>
+                <h1>Front-end: navigation</h1>
+            </header>
+            <div>
+                <div class="list-group">
+                    <p>
+                        Navigation is done using Bootstrap <a href="http://getbootstrap.com/components/#nav">Navs</a> and <a href="http://getbootstrap.com/components/#navbar">Navbars</a>.
+                    </p>
+                    <div id="navs" class="list-group-item">
+                        <h3 class="list-group-item-heading">Bootstrap navs</h3>
+                        <div class="list-group-item-text">
+                            <p>
+                                An example of Bootstrap navs is the right-hand manu of this screen.
+                                The code is located in <strong>assets/html/static/frontEnd.tmpl.html</strong>.
+                            </p>
+                            <p>
+                                New items can be created by adding list elements.
+                            </p>
+                            <pre>
+&lt;li&gt;&lt;a href="/page/static/navigation"&gt;Navigation&lt;/a&gt;&lt;/li&gt;
+                            </pre>
+                        </div>
+                    </div>
+                    <div id="navsBars" class="list-group-item">
+                        <h3 class="list-group-item-heading">Bootstrap navbars</h3>
+                        <div class="list-group-item-text">
+                            <p>
+                                An example of Bootstrap <strong>navbars</strong> is the top manu of this application.
+                                The code is located in <strong>assets/html/menu.tmpl.html</strong>.
+                            </p>
+                            <p>
+                                New items can be created following the same logic as the one used in navs.
+                            </p>
+                            <pre>
+&lt;li&gt;&lt;a href="/page/static/running"&gt;Running the app&lt;/a&gt;&lt;/li&gt;
+                            </pre>
+                            <p>
+                                Links within navs can be nested.
+                            </p>
+                            <pre>
+&lt;li class="dropdown"&gt;
+    &lt;a href="#" class="dropdown-toggle" data-toggle="dropdown"&gt;Front-end &lt;span class="caret"&gt;&lt;/span&gt;&lt;/a&gt;
+    &lt;ul class="dropdown-menu" role="menu"&gt;
+        &lt;li&gt;&lt;a href="/page/static/navigation"&gt;Navigation&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="/page/static/staticScreen"&gt;Static Screens&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/li&gt;
+                            </pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+</div>
