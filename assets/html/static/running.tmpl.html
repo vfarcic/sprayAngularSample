@@ -1,0 +1,60 @@
+<article>
+    <header>
+        <h1 id="pageHeader">Running the application</h1>
+    </header>
+    <h2>Prerequisites</h2>
+    <div>
+        <div>
+            <h3>Back-end</h3>
+            Following back-end prerequisites need to be installed:
+            <ul>
+                <li><a href="http://www.scala-lang.org/">Scala</a></li>
+                <li><a href="http://www.oracle.com/technetwork/java/javase/downloads">JDK 7+</a></li>
+                <li><a href="http://www.scala-sbt.org/">SBT (Simple Build Tool)</a></li>
+                <li><a href="http://www.mongodb.org/">MongoDB</a></li>
+            </ul>
+        </div>
+        <div>
+            <h3>Front-end</h3>
+            Following front-end prerequisites need to be installed:
+            <ul>
+                <li><a href="http://nodejs.org/">NodeJS with NPM</a></li>
+                <li><a href="http://gruntjs.com/">Grunt</a>: <code>npm install -g grunt-cli</code></li>
+            </ul>
+        </div>
+    </div>
+    <h2>Dependencies</h2>
+    <div>
+        Back-end dependencies will be download first time the application is run.
+        To download the front-end dependencies:
+        <pre>
+            cd assets
+            npm install
+        </pre>
+    </div>
+    <h2>Running</h2>
+    <div>
+        <div>
+            MongoDB needs to be up and running:
+            <pre>
+                mongod
+            </pre>
+        </div>
+        <div>
+            To run the application:
+            <pre>
+                sbt run
+            </pre>
+        </div>
+        <div>
+            Application can be run in "triggered restart" mode.
+            Your application starts up and SBT watches for changes in your source (or resource) files.
+            If a change is detected SBT recompiles the required classes and sbt-revolver automatically restarts your application.
+            When you press &lt;ENTER&gt; SBT leaves "triggered restart" and returns to the normal prompt keeping your application running.
+            <pre>
+            sbt ~re-start
+            </pre>
+        </div>
+        Once the application is running, open the <a href="http://localhost:8080" target="_blank">http://localhost:8080</a>.
+    </div>
+</article>
