@@ -49,8 +49,7 @@ trait BooksRouting extends HttpService with DefaultJsonProtocol {
 
   implicit def booksExecutionContext = actorRefFactory.dispatcher
   val auth = new Authentificator(actorRefFactory).basicAuth
-  val logBookActor = actorRefFactory.actorOf(Props[LogActor])
-  val booksActor = actorRefFactory.actorOf(Props[BooksActor])
+  val booksActor = actorRefFactory.actorOf(Props[BooksActor], "booksActor")
   implicit val booksTimeout = defaultTimeout
   implicit val booksFormat = jsonFormat6(Book)
   implicit val booksReducedFormat = jsonFormat3(BookReduced)

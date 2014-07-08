@@ -63,6 +63,13 @@ cd assets
 npm test
 ```
 
+Alternative way of executing tests (without the installation of NPM and Bower dependencies)
+
+```bash
+cd assets
+grunt jasmine
+```
+
 
 Presentation (AngularJS & Bootstrap CSS)
 ----------------------------------------
@@ -71,7 +78,7 @@ Presentation (AngularJS & Bootstrap CSS)
 
 ### [Validation](http://localhost:8080/page/books)
 
-Required (i.e. priece), pattern (i.e. price), disabled (i.e. Save)...
+Required (i.e. price), pattern (i.e. price), disabled (i.e. Save)...
 
 [books.tmpl.html]
 ```html
@@ -370,7 +377,6 @@ Continuous integration
 
 **Random**
 RequireJS
-Revolver
-Paths (including root)
-[Akka Cluster](http://doc.akka.io/docs/akka/snapshot/scala/cluster-usage.html) & [Spray Cluster](https://github.com/ograycode/akka-spray-cluster-example)
-Bower
+Installation
+AngularJS Directives (example from https://gist.github.com/tleunen/5277011)
+Try ReactiveMongo

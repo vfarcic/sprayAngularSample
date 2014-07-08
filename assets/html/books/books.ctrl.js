@@ -5,14 +5,12 @@ angular.module('booksModule', ['ngTable'])
             $scope.listBooks = function() {
                 // TODO Skip asking server after PUT or DELETE requests
                 $http.get('/api/v1/books').then(function(response) {
-//                $http.get('/api/v1/general/list/books').then(function(response) {
                     $scope.books = response.data;
                     $scope.setTableParams();
                 });
             };
             $scope.openBook = function(bookId) {
                 $http.get('/api/v1/books/' + bookId).then(function(response) {
-//                $http.get('/api/v1/general/get/books/_id:' + bookId).then(function(response) {
                     $scope.book = response.data;
                     $scope.originalBook = angular.copy($scope.book);
                 });
@@ -24,7 +22,6 @@ angular.module('booksModule', ['ngTable'])
             $scope.saveBook = function() {
                 $scope.book.link = '/api/v1/books/' + $scope.book._id;
                 $http.put('/api/v1/books', $scope.book).then(function() {
-//                $http.put('/api/v1/general/books', $scope.book).then(function() {
                     $scope.listBooks();
                     $scope.newBook();
                 });
