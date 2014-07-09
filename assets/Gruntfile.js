@@ -21,10 +21,16 @@ module.exports = function(grunt) {
                 specs: '../test/html/**/*.spec.js'
             }
         }
+    },
+    watch: {
+        files: ['html/**/*.js', '../test/html/**/*.spec.js'],
+        tasks: ['jasmine']
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-jasmine');
+
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.registerTask('default', ['jasmine']);
 

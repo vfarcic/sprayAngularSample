@@ -1,13 +1,12 @@
 describe('configModule controllers', function() {
 
-    var route, httpBackend;
+    var route;
 
     beforeEach(module('ngRoute', 'configModule'));
 
     beforeEach(
         inject(function($route, $httpBackend) {
             route = $route;
-            httpBackend = $httpBackend;
         })
     );
 

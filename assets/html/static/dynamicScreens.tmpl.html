@@ -1,0 +1,138 @@
+<div class="row">
+    <ng-include src="'/assets/html/static/frontEnd.tmpl.html'"></ng-include>
+    <div class="col-md-9">
+        <article>
+            <header>
+                <h1>Front-end: dynamic screens</h1>
+            </header>
+            <div>
+                <div class="list-group">
+                    <p>
+                        This application contains both static and dynamic screens.
+                        Dynamic screens contain plain HTML, CSS and Javascript code that communicates with the server.
+                        An example of a dynamic screen can be see from <a href="/page/books">Books</a> menu item.
+                    </p>
+                    <p>
+                        Following steps describe how to add a new dynamic screen.
+                    </p>
+                    <div id="link" class="list-group-item">
+                        <h3 class="list-group-item-heading">Create a link</h3>
+                        <div class="list-group-item-text">
+                            <p>
+                                Create a link to the new screen with the <code>href="/page/[NAME]"</code>.
+                                <strong>[NAME]</strong> can be any alpha-numeric string.
+                                Spaces are not allowed.
+                            </p>
+                            <p>
+                                Following example is taken from the menu.tmpl.html:
+                            </p>
+                            <pre>
+&lt;li&gt;&lt;a href="/page/books"&gt;Books&lt;/a&gt;&lt;/li&gt;
+                            </pre>
+                        </div>
+                    </div>
+                    <div id="router" class="list-group-item">
+                        <h3 class="list-group-item-heading">Add the route</h3>
+                        <div class="list-group-item-text">
+                            <p>
+                                Different screens or views are defined using AngularJS routing.
+                                Route to the new screen should be specified in config.ctrl.js. It contains <code>templateUrl</code> and <code>controller</code>.
+                                <ul>
+                                    <li>templateUrl: path or function that returns a path to an html template that should be used by ngView.</li>
+                                    <li>controller: function that should be associated with newly created scope or the name of a registered controller if passed as a string.</li>
+                                </ul>
+                            </p>
+                            <p>
+                                Before writing the actual route, we should write tests.
+                                Following snippet was taken from config.ctrl.spec.js.
+                            </p>
+                            <pre>
+describe('/page/books path', function() {
+    var path = '/page/books';
+    it('should use the template /assets/html/books/books.tmpl.html', function() {
+        expect(route.routes[path].templateUrl).toEqual('/assets/html/books/books.tmpl.html');
+    });
+    it('should use the booksCtrl controller', function() {
+        expect(route.routes[path].controller).toBe('booksCtrl');
+    });
+});
+                            </pre>
+                            <p>
+                                Run the tests by executing <code>grunt jasmine</code> from the assets directory.
+                                Since implementation is not done, tests should fail.
+                            </p>
+                            <p>
+                                Next, we should write the implementation code. Following snipped was taken from config.ctrl.spec.js.
+                            </p>
+                            <pre>
+.when('/page/books', {
+    templateUrl: '/assets/html/books/books.tmpl.html',
+    controller: 'booksCtrl'
+})
+                            </pre>
+                            <p>
+                                Once implementation is done, run the tests by executing <code>grunt jasmine</code> from the assets directory.
+                                Since implementation is not done, tests should succeed.
+                            </p>
+                            <p>
+                                Please consult config.ctrl.spec.js and config.ctrl.js for the complete tests and implementation code.
+                                Please consult AngularJS <a href="https://docs.angularjs.org/api/ngRoute/provider/$routeProvider">routeProvider</a> for more info.
+                            </p>
+                        </div>
+                    </div>
+                    <div id="controller" class="list-group-item">
+                        <h3 class="list-group-item-heading">Create new controller</h3>
+                        <div class="list-group-item-text">
+                            <p>
+                                AngularJS controllers are used to set the screen initial state and define behavior.
+                                Controllers reside inside modules.
+                                Each screen should have one module and one or more controllers.
+                            </p>
+                            <p>
+                                To create a new module and controller create new directory inside assets/html and copy into it the template.ctrl.js.
+                                For example, <a href="/page/books">books screen</a> has module and controller defined in assets/html/books/books.ctrl.js.
+                                Change MODULE_NAME and CONTROLLER_NAME values.
+                                Following example is taken from the books.ctrl.js file.
+                            </p>
+                            <pre>
+angular.module('booksModule', ['ngTable'])
+    .controller('booksCtrl', ['$scope', '$http', 'ngTableParams',
+        function ($scope, $http, ngTableParams) {
+            ...
+        }
+    ]);
+                            </pre>
+                            <p>
+                                ngTable is the name of the additional module we're using.
+                                $http and ngTableParams are sets of functions that will be injected in our code.
+                            </p>
+                            <p>
+                                In order for the new module to be used by the application, it should be added to the main.ctrl.spec.js.
+                            </p>
+                            <pre>
+angular.module('mainModule', [
+    'ngRoute',
+    'configModule',
+    'booksModule'
+])
+                            </pre>
+                            <p>
+                                Before writing the actual route, we should write tests.
+                                Following snippet was taken from books.ctrl.spec.js.
+                            </p>
+                        </div>
+                    </div>
+                    <div id="open" class="list-group-item">
+                        <h3 class="list-group-item-heading">Open</h3>
+                        <div class="list-group-item-text">
+                            <p>
+                                Open the newly created template by navigating to the http://localhost:8080/page/static/<strong>[NAME]</strong>.
+                                The screen you are looking at right now is an example of static HTML template.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+</div>

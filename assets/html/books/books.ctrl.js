@@ -1,4 +1,3 @@
-// TODO Test
 angular.module('booksModule', ['ngTable'])
     .controller('booksCtrl', ['$scope', '$http', 'ngTableParams',
         function ($scope, $http, ngTableParams) {
@@ -40,30 +39,37 @@ angular.module('booksModule', ['ngTable'])
                     $scope.listBooks();
                 });
             };
+            // TODO Test
             $scope.cssClass = function(ngModelController) {
                 return {
                     'has-error': ngModelController.$invalid,
                     'has-success': ngModelController.$valid
                 };
             };
+            // TODO Test
             $scope.cssClassButton = function(ngModelController) {
                 return {
                     'btn-success': ngModelController.$valid,
                     'btn-danger': ngModelController.$invalid
                 };
             };
+            // TODO Test
             $scope.isValid = function(ngModelController) {
                 return ngModelController.$valid && !angular.equals($scope.book, $scope.originalBook);
             };
+            // TODO Test
             $scope.canRevertBook = function() {
                 return !angular.equals($scope.book, $scope.originalBook);
             };
+            // TODO Test
             $scope.canDeleteBook = function() {
                 return (typeof $scope.book !== 'undefined' && typeof $scope.book._id !== 'undefined');
             };
+            // TODO Test
             $scope.pricePattern = function() {
                 return (/^[\d]+\.*(\d)*$/);
             };
+            // TODO Test
             $scope.setTableParams = function() {
                 if ($scope.tableParams !== undefined) {
                     $scope.tableParams.count($scope.tableParams.count() - 1);
@@ -79,7 +85,9 @@ angular.module('booksModule', ['ngTable'])
                     }
                 });
             };
+            // TODO Test
             $scope.listBooks();
+            // TODO Test
             $scope.newBook();
         }
     ]);

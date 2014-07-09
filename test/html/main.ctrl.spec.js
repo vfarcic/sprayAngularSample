@@ -1,7 +1,5 @@
 describe('mainModule controllers', function() {
 
-    var route, httpBackend;
-
     beforeEach(module('mainModule'));
 
     describe('mainCtrl controller', function() {
