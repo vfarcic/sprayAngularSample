@@ -12,12 +12,13 @@ import com.mongodb.casbah.Imports._
 
 case class AuditMessage(message: String, date: Long = System.currentTimeMillis())
 
-case class LogDebugMessage(message: String)
-case class LogInfoMessage(message: String)
-case class LogErrorMessage(message: String)
-case class AuditMessageSave(message: AuditMessage)
-object AuditMessageList
-
+object LogActor {
+  case class Debug(message: String)
+  case class Info(message: String)
+  case class Error(message: String)
+  case class SaveAudit(message: AuditMessage)
+  object ListAudit
+}
 class LogActor extends Actor with ActorLogging with DbSettings {
 
   override def preStart() = {
@@ -34,14 +35,14 @@ class LogActor extends Actor with ActorLogging with DbSettings {
   val collection = db(settings.dbCollectionAudit)
 
   def receive = {
-    case LogDebugMessage(message)   => log.debug(message)
-    case LogInfoMessage(message)    => log.info(message)
-    case LogErrorMessage(message)   => log.error(message)
-    case AuditMessageSave(message)  =>
+    case LogActor.Debug(message)   => log.debug(message)
+    case LogActor.Info(message)    => log.info(message)
+    case LogActor.Error(message)   => log.error(message)
+    case LogActor.SaveAudit(message)  =>
       log.info(message.message)
       val dbObject = grater[AuditMessage].asDBObject(message)
       sender ! collection.insert(dbObject)
-    case AuditMessageList           =>
+    case LogActor.ListAudit           =>
       sender ! collection.find().toList.map(grater[AuditMessage].asObject(_))
     case _                          => log.error("This message is not supported")
   }
@@ -58,7 +59,7 @@ trait LogsRouting extends HttpService with DefaultJsonProtocol {
   val logsRoute = {
     path("logs" / "audit") {
       get {
-        onSuccess(logActor ? AuditMessageList) { extraction =>
+        onSuccess(logActor ? LogActor.ListAudit) { extraction =>
           complete {
             extraction.asInstanceOf[List[AuditMessage]]
           }

@@ -6,7 +6,7 @@ import com.mongodb.casbah.Imports._
 import com.mongodb.casbah.commons.MongoDBObject
 import com.novus.salat._
 import com.novus.salat.global._
-import com.technologyconversations.spraySample.{Authentificator, DbSettings, Message}
+import com.technologyconversations.spraySample.{Authenticator, DbSettings, Message}
 import spray.httpx.SprayJsonSupport._
 import spray.json.DefaultJsonProtocol
 import spray.routing.HttpService
@@ -19,28 +19,34 @@ case class Book(_id: Int, image: String, title: String, author: String, price: D
   require(!title.contains("Voldemort"))
 }
 
-object BooksList
-case class BooksSave(book: Book)
-case class BooksDelete(id: Int)
-object BooksDeleteAll
-case class BooksGet(id: Int)
+
+// TODO Test
+object BooksActor {
+  object List
+  case class Save(book: Book)
+  case class Delete(id: Int)
+  object DeleteAll
+  case class Get(id: Int)
+}
+// TODO Test
 class BooksActor extends Actor with ActorLogging with DbSettings {
   val collection = db(settings.dbCollectionBooks)
   def receive = {
-    case BooksList =>
+    case BooksActor.List =>
       sender ! collection.find().toList.map(grater[BookReduced].asObject(_))
-    case BooksSave(book) =>
+    case BooksActor.Save(book) =>
       val query = MongoDBObject("_id" -> book._id)
       val dbObject = grater[Book].asDBObject(book)
       sender ! collection.update(query, dbObject, upsert = true)
-    case BooksDelete(id) =>
+    case BooksActor.Delete(id) =>
       sender ! collection.findAndRemove(MongoDBObject("_id" -> id))
-    case BooksDeleteAll =>
+    case BooksActor.DeleteAll =>
       sender ! collection.remove(MongoDBObject.empty)
-    case BooksGet(id) =>
+    case BooksActor.Get(id) =>
       val dbObject = collection.findOne(MongoDBObject("_id" -> id))
       sender ! grater[Book].asObject(dbObject.getOrElse(DBObject.empty))
-
+    case _ =>
+      log.error("This message is not supported")
   }
 }
 
@@ -48,7 +54,7 @@ class BooksActor extends Actor with ActorLogging with DbSettings {
 trait BooksRouting extends HttpService with DefaultJsonProtocol {
 
   implicit def booksExecutionContext = actorRefFactory.dispatcher
-  val auth = new Authentificator(actorRefFactory).basicAuth
+  val auth = new Authenticator(actorRefFactory).basicAuth
   val booksActor = actorRefFactory.actorOf(Props[BooksActor], "booksActor")
   implicit val booksTimeout = defaultTimeout
   implicit val booksFormat = jsonFormat6(Book)
@@ -61,12 +67,12 @@ trait BooksRouting extends HttpService with DefaultJsonProtocol {
       authenticate(auth) { userName =>
         path(IntNumber) { id =>
           get {
-            onSuccess(booksActor ? BooksGet(id)) { extraction =>
+            onSuccess(booksActor ? BooksActor.Get(id)) { extraction =>
               complete(extraction.asInstanceOf[Book])
             }
           } ~ delete {
             authorize(hasPermissionsToDeleteBook(userName)) {
-              onSuccess(booksActor ? BooksDelete(id)) { extraction =>
+              onSuccess(booksActor ? BooksActor.Delete(id)) { extraction =>
                 complete(extraction.toString)
               }
             }
@@ -78,17 +84,17 @@ trait BooksRouting extends HttpService with DefaultJsonProtocol {
           }
         } ~ pathEnd {
           get {
-            onSuccess(booksActor ? BooksList) { extraction =>
+            onSuccess(booksActor ? BooksActor.List) { extraction =>
               complete(extraction.asInstanceOf[List[BookReduced]])
             }
           } ~ put {
             entity(as[Book]) { book =>
-              onSuccess(booksActor ? BooksSave(book)) { extraction =>
+              onSuccess(booksActor ? BooksActor.Save(book)) { extraction =>
                 complete(extraction.toString)
               }
             }
           } ~ delete {
-            onSuccess(booksActor ? BooksDeleteAll) { extraction =>
+            onSuccess(booksActor ? BooksActor.DeleteAll) { extraction =>
               complete(extraction.toString)
             }
           }
