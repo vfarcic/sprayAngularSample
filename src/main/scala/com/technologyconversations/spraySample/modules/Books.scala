@@ -6,7 +6,7 @@ import com.mongodb.casbah.Imports._
 import com.mongodb.casbah.commons.MongoDBObject
 import com.novus.salat._
 import com.novus.salat.global._
-import com.technologyconversations.spraySample.{Authenticator, DbSettings, Message}
+import com.technologyconversations.spraySample.{Settings, Authenticator, Message}
 import spray.httpx.SprayJsonSupport._
 import spray.json.DefaultJsonProtocol
 import spray.routing.HttpService
@@ -28,9 +28,11 @@ object BooksActor {
   object DeleteAll
   case class Get(id: Int)
 }
+
 // TODO Test
-class BooksActor extends Actor with ActorLogging with DbSettings {
-  val collection = db(settings.dbCollectionBooks)
+class BooksActor extends Actor with ActorLogging {
+  val settings = Settings(context.system)
+  val collection = settings.db(settings.dbCollectionBooks)
   def receive = {
     case BooksActor.List =>
       sender ! collection.find().toList.map(grater[BookReduced].asObject(_))
@@ -55,7 +57,7 @@ trait BooksRouting extends HttpService with DefaultJsonProtocol {
 
   implicit def booksExecutionContext = actorRefFactory.dispatcher
   val auth = new Authenticator(actorRefFactory).basicAuth
-  val booksActor = actorRefFactory.actorOf(Props[BooksActor], "booksActor")
+  val booksActor = actorRefFactory.actorOf(Props[BooksActor], "books")
   implicit val booksTimeout = defaultTimeout
   implicit val booksFormat = jsonFormat6(Book)
   implicit val booksReducedFormat = jsonFormat3(BookReduced)

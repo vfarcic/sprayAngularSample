@@ -4,7 +4,7 @@ import akka.actor.{Actor, ActorLogging, Props}
 import akka.pattern.ask
 import com.novus.salat._
 import com.novus.salat.global._
-import com.technologyconversations.spraySample.DbSettings
+import com.technologyconversations.spraySample.Settings
 import spray.json.DefaultJsonProtocol
 import spray.routing.HttpService
 import spray.httpx.SprayJsonSupport._
@@ -19,7 +19,7 @@ object LogActor {
   case class SaveAudit(message: AuditMessage)
   object ListAudit
 }
-class LogActor extends Actor with ActorLogging with DbSettings {
+class LogActor extends Actor with ActorLogging {
 
   override def preStart() = {
     log.debug("Started logging")
@@ -32,7 +32,8 @@ class LogActor extends Actor with ActorLogging with DbSettings {
     )
   }
 
-  val collection = db(settings.dbCollectionAudit)
+  val settings = Settings(context.system)
+  val collection = settings.db(settings.dbCollectionAudit)
 
   def receive = {
     case LogActor.Debug(message)   => log.debug(message)
@@ -51,7 +52,7 @@ class LogActor extends Actor with ActorLogging with DbSettings {
 
 trait LogsRouting extends HttpService with DefaultJsonProtocol {
 
-  val logActor = actorRefFactory.actorOf(Props[LogActor])
+  val logActor = actorRefFactory.actorOf(Props[LogActor], "log")
   implicit def logsExecutionContext = actorRefFactory.dispatcher
   implicit val logsTimeout = defaultTimeout
   implicit val auditMessage = jsonFormat2(AuditMessage)
