@@ -39,38 +39,37 @@ angular.module('booksModule', ['ngTable'])
                     $scope.listBooks();
                 });
             };
-            // TODO Test
             $scope.cssClass = function(ngModelController) {
                 return {
                     'has-error': ngModelController.$invalid,
                     'has-success': ngModelController.$valid
                 };
             };
-            // TODO Test
             $scope.cssClassButton = function(ngModelController) {
                 return {
                     'btn-success': ngModelController.$valid,
                     'btn-danger': ngModelController.$invalid
                 };
             };
-            // TODO Test
             $scope.isValid = function(ngModelController) {
                 return ngModelController.$valid && !angular.equals($scope.book, $scope.originalBook);
             };
-            // TODO Test
             $scope.canRevertBook = function() {
                 return !angular.equals($scope.book, $scope.originalBook);
             };
-            // TODO Test
             $scope.canDeleteBook = function() {
-                return (typeof $scope.book !== 'undefined' && typeof $scope.book._id !== 'undefined');
+                return (
+                    typeof $scope.book !== 'undefined' &&
+                    typeof $scope.book._id !== 'undefined' &&
+                    $scope.book._id !== ''
+                );
             };
-            // TODO Test
             $scope.pricePattern = function() {
                 return (/^[\d]+\.*(\d)*$/);
             };
-            // TODO Test
             $scope.setTableParams = function() {
+                var total = 0;
+                if ($scope.books !== undefined) total = $scope.books.length;
                 if ($scope.tableParams !== undefined) {
                     $scope.tableParams.count($scope.tableParams.count() - 1);
                 }
@@ -79,7 +78,7 @@ angular.module('booksModule', ['ngTable'])
                     count: 10
                 }, {
                     counts: [], // hide page counts control
-                    total: $scope.books.length,
+                    total: total,
                     getData: function($defer, params) {
                         $defer.resolve($scope.books.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                     }

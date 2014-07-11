@@ -38,6 +38,10 @@ Running
 
 Make sure that MongoDB is up and running on localhost on port 27017.
 
+```bash
+mongod
+```
+
 To run the application execute:
 
 ```bash
@@ -57,18 +61,25 @@ sbt ~re-start
 Unit Tests
 ----------
 
-Front-end unit testing
+Front-end unit testing:
 
 ```bash
 cd assets
 npm test
 ```
 
-Alternative way of executing tests (without the installation of NPM and Bower dependencies)
+Alternative way of executing tests (without the installation of NPM and Bower dependencies):
 
 ```bash
 cd assets
 grunt jasmine
+```
+
+Tests can be executed continuously on every change to JS files:
+
+```bash
+cd assets
+grunt watch
 ```
 
 
@@ -381,3 +392,5 @@ RequireJS
 Installation
 AngularJS Directives (example from https://gist.github.com/tleunen/5277011)
 Try ReactiveMongo
+SEO optimization (https://developers.google.com/webmasters/ajax-crawling/docs/html-snapshot and https://prerender.io/)
+Move README.md to the site

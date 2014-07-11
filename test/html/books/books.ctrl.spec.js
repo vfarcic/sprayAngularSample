@@ -7,9 +7,10 @@ describe('booksModule controllers', function() {
     describe('booksCtrl controller', function() {
 
         var scope, book, books, bookId;
+        var listBooksSpy;
 
         beforeEach(
-            inject(function($rootScope, $injector, $controller, $httpBackend) {
+            inject(function($rootScope, $injector, $controller, $httpBackend, ngTableParams) {
                 book = {_id: 1};
                 books = [book];
                 bookId = 1;
@@ -157,6 +158,162 @@ describe('booksModule controllers', function() {
                 httpBackend.flush();
                 expect(scope.listBooks).toHaveBeenCalled();
             });
+        });
+
+        describe('cssClass function', function() {
+            var ngModelController;
+            beforeEach(function() {
+                ngModelController = {$invalid: false, $valid: true};
+            });
+            it('should return has-error when model controller is invalid', function() {
+                ngModelController = {$invalid: true, $valid: false};
+                var expected = {
+                    'has-error': true,
+                    'has-success': false
+                }
+                expect(scope.cssClass(ngModelController)).toEqual(expected);
+            });
+            it('should return has-success when model controller is valid', function() {
+                var expected = {
+                    'has-error': false,
+                    'has-success': true
+                }
+                expect(scope.cssClass(ngModelController)).toEqual(expected);
+            });
+        });
+
+        describe('cssClassButton function', function() {
+            var ngModelController;
+            beforeEach(function() {
+                ngModelController = {$invalid: false, $valid: true};
+            });
+            it('should return has-error when model controller is invalid', function() {
+                ngModelController = {$invalid: true, $valid: false};
+                var expected = {'btn-danger': true, 'btn-success': false}
+                expect(scope.cssClassButton(ngModelController)).toEqual(expected);
+            });
+            it('should return has-success when model controller is valid', function() {
+                var expected = {'btn-danger': false, 'btn-success': true}
+                expect(scope.cssClassButton(ngModelController)).toEqual(expected);
+            });
+        });
+
+        describe('isValid function', function() {
+            var ngModelController;
+            beforeEach(function() {
+                scope.book = book;
+                scope.originalBook = {};
+                ngModelController = {$invalid: false, $valid: true};
+            });
+            it('should return true when ngModelController is valid and book and originalBook are NOT equal', function() {
+                expect(scope.isValid(ngModelController)).toEqual(true);
+            });
+            it('should return false when ngModelController is invalid', function() {
+                ngModelController = {$invalid: true, $valid: false};
+                expect(scope.isValid(ngModelController)).toEqual(false);
+            });
+            it('should return false when book and originalBook are equal', function() {
+                scope.originalBook = angular.copy(scope.book);
+                expect(scope.isValid(ngModelController)).toEqual(false);
+            });
+            it('should return true when ngModelController is invalid and book and originalBook are equal', function() {
+                ngModelController = {$invalid: true, $valid: false};
+                scope.originalBook = angular.copy(scope.book);
+                expect(scope.isValid(ngModelController)).toEqual(false);
+            });
+        });
+
+        describe('canRevertBook function', function() {
+            beforeEach(function() {
+                scope.book = book;
+                scope.originalBook = {};
+            });
+            it('should return false when book and originalBook are the same', function() {
+                scope.originalBook = angular.copy(scope.book);
+                expect(scope.canRevertBook()).toEqual(false);
+            });
+            it('should return true when book and originalBook are NOT the same', function() {
+                expect(scope.canRevertBook()).toEqual(true);
+            });
+        });
+
+        describe('canDeleteBook function', function() {
+            it('should return false when book is undefined', function() {
+                scope.book = undefined;
+                expect(scope.canDeleteBook()).toEqual(false);
+            });
+            it('should return false when book is empty JSON', function() {
+                scope.book = {};
+                expect(scope.canDeleteBook()).toEqual(false);
+            });
+            it('should return false when book ID is undefined', function() {
+                scope.book._id = undefined;
+                expect(scope.canDeleteBook()).toEqual(false);
+            });
+            it('should return false when book ID is empty', function() {
+                scope.book._id = '';
+                expect(scope.canDeleteBook()).toEqual(false);
+            });
+        });
+
+        describe('pricePattern function', function() {
+            it('should start with a number', function() {
+                expect('a1').not.toMatch(scope.pricePattern());
+            });
+            it('should start with at least one digit', function() {
+                expect('.123').not.toMatch(scope.pricePattern());
+            });
+            it('should have at least one digit', function() {
+                expect('.23').not.toMatch(scope.pricePattern());
+            });
+            it('should allow only numbers and one dot (.) as decimal separator', function() {
+                expect('x.23').not.toMatch(scope.pricePattern());
+                expect('23.x').not.toMatch(scope.pricePattern());
+            });
+            it('should return true when only digits', function() {
+                expect('123').toMatch(scope.pricePattern());
+            });
+            it('should return true when digits followed with dot (.)', function() {
+                expect('123.').toMatch(scope.pricePattern());
+            });
+            it('should return true when digits followed with dot (.) and more digits', function() {
+                expect('123.45').toMatch(scope.pricePattern());
+            });
+        });
+
+        describe('setTableParams function', function() {
+            it('should assign new ngTableParams to tableParams', function() {
+                scope.setTableParams();
+                expect(scope.tableParams).toBeDefined();
+            });
+            it('should set ngTableParams page to 1', function() {
+                scope.setTableParams();
+                expect(scope.tableParams.page()).toBe(1);
+            });
+            it('should set ngTableParams count to 10', function() {
+                scope.setTableParams();
+                expect(scope.tableParams.count()).toBe(10);
+            });
+            it('should set ngTableParams settings().counts to [] (hide counts)', function() {
+                scope.setTableParams();
+                expect(scope.tableParams.settings().counts).toEqual([]);
+            });
+            it('should set ngTableParams settings().total to 0 when books are undefined', function() {
+                scope.books = undefined;
+                scope.setTableParams();
+                expect(scope.tableParams.settings().total).toEqual(0);
+            });
+            it('should set ngTableParams settings().total to 0 when books are empty', function() {
+                scope.books = [];
+                scope.setTableParams();
+                expect(scope.tableParams.settings().total).toEqual(0);
+            });
+            it('should set ngTableParams settings().total to the number of books', function() {
+                scope.books = [{_id: 1}, {_id: 2}, {_id: 3}];
+                scope.setTableParams();
+                expect(scope.tableParams.settings().total).toEqual(scope.books.length);
+            });
+
         });
 
     });
