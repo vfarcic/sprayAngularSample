@@ -57,10 +57,7 @@ describe('/page/books path', function() {
     });
 });
                             </pre>
-                            <p>
-                                Run the tests by executing <code>grunt jasmine</code> from the assets directory.
-                                Since implementation is not done, tests should fail.
-                            </p>
+                            <ng-include src="'/assets/html/static/jasmineUnitTestsBefore.tmpl.html'"></ng-include>
                             <p>
                                 Next, we should write the implementation code. Following snipped was taken from config.ctrl.spec.js.
                             </p>
@@ -70,10 +67,7 @@ describe('/page/books path', function() {
     controller: 'booksCtrl'
 })
                             </pre>
-                            <p>
-                                Once implementation is done, run the tests by executing <code>grunt jasmine</code> from the assets directory.
-                                Since implementation is not done, tests should succeed.
-                            </p>
+                            <ng-include src="'/assets/html/static/jasmineUnitTestsAfter.tmpl.html'"></ng-include>
                             <p>
                                 Please consult config.ctrl.spec.js and config.ctrl.js for the complete tests and implementation code.
                                 Please consult AngularJS <a href="https://docs.angularjs.org/api/ngRoute/provider/$routeProvider">routeProvider</a> for more info.
@@ -117,11 +111,39 @@ angular.module('mainModule', [
 ])
                             </pre>
                             <p>
-                                Before writing the actual route, we should write tests.
+                                Before writing the actual controller code, we should write tests.
                                 Following snippet was taken from books.ctrl.spec.js.
                             </p>
+                            <pre>
+describe('listBooks function', function() {
+    beforeEach(function() {
+        httpBackend.expectGET('/api/v1/books').respond(books);
+    });
+    it('should set value to the books variable', function() {
+        scope.books = [];
+        scope.listBooks();
+        httpBackend.flush();
+        expect(scope.books).toEqual(books);
+    });
+});
+                            </pre>
+                            <ng-include src="'/assets/html/static/jasmineUnitTestsBefore.tmpl.html'"></ng-include>
                             <p>
-
+                                After each test is written, we should write the actual implementation inside the controller function.
+                                Following snippet was taken from books.ctrl.js.
+                                It represent the implementation of the test written above.
+                            </p>
+                            <pre>
+$scope.listBooks = function() {
+    $http.get('/api/v1/books').then(function(response) {
+        $scope.books = response.data;
+    });
+};
+                            </pre>
+                            <ng-include src="'/assets/html/static/jasmineUnitTestsAfter.tmpl.html'"></ng-include>
+                            <p>
+                                With the implementation code written above, we're having books retrieved from the server and placed in the $scope.
+                                Now it's time to display those books.
                             </p>
                         </div>
                     </div>
