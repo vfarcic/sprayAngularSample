@@ -143,7 +143,37 @@ $scope.listBooks = function() {
                             <ng-include src="'/assets/html/static/jasmineUnitTestsAfter.tmpl.html'"></ng-include>
                             <p>
                                 With the implementation code written above, we're having books retrieved from the server and placed in the $scope.
-                                Now it's time to display those books.
+                                Now it's time to display data on the screen.
+                            </p>
+                        </div>
+                    </div>
+                    <div id="htmlTemplate" class="list-group-item">
+                        <h3 class="list-group-item-heading">Create new HTML template</h3>
+                        <div class="list-group-item-text">
+                            <p>
+                                Create new HTML file in the same location as specified previously in the router (i.e. /assets/html/books/books.tmpl.html).
+                                It is important to understand that this template will be injected into the HTML from index.html.
+                                Do NOT include HTML elements like <code>&lt;html&gt;</code>, <code>&lt;body&gt;</code>, etc
+                            </p>
+                            <p>
+                                To display the list of books from obtained from the controller above, code would be something like following (code snippet was taken from books.tmpl.html).
+                            </p>
+                            <pre>
+&lt;table id="books" class="table table-condensed table-striped table-hover ng-table-responsive"&gt;
+    &lt;tbody ng-repeat="book in books"&gt;
+    &lt;tr&gt;
+        &lt;td&gt;
+            <code ng-non-bindable>{{book.title}}</code>
+        &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;
+                            </pre>
+                            <p>
+                                This code snippet assigns IDs to the table (IDs are used for BDD testing).
+                                It specifies bootstrap styles through the <code>class</code>.
+                                It repeats <code>tbody</code> for each book found in books JSON obtained through the controller above.
+                                Finally, <code ng-non-bindable>{{book.title}}</code> displays book title.
                             </p>
                         </div>
                     </div>
@@ -151,8 +181,8 @@ $scope.listBooks = function() {
                         <h3 class="list-group-item-heading">Open</h3>
                         <div class="list-group-item-text">
                             <p>
-                                Open the newly created template by navigating to the http://localhost:8080/page/static/<strong>[NAME]</strong>.
-                                The screen you are looking at right now is an example of static HTML template.
+                                Open the newly created dynamic template by navigating to the address specified in the router.
+                                Please see the final version of the <a href="/page/books">Books example</a>.
                             </p>
                         </div>
                     </div>

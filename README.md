@@ -2,36 +2,74 @@ Spray & Angular sample
 ======================
 
 
-Prerequisites
--------------
+Development: prerequisites
+--------------------------
+
+This application is created using [Scala](http://www.scala-lang.org/) and (optionally Java) in the back-end.
+Front-end is decoupled from the back-end and based on HTML, JavaScript and CSS.
+Communication between the back-end and the front-end is done through the REST API.
 
 ### Back-end
 
-**Scala**
-**Play**
-**SBT**
+Whole back-end code is based on [Akka](http://akka.io/) and is divided into 3 major parts.
+
+To develop the back-end, following needs to be downloaded and installed:
+
+* [JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html)</li>
+* [Scala](http://www.scala-lang.org/)</li>
+* [SBT](http://www.scala-sbt.org/)</li>
+
+Routing is done with [Spray](http://spray.io/).
+Spray uses DSL based on [Scala](http://www.scala-lang.org/) and uses [Akka](http://akka.io/) behind the curtains.
+
+Services are done using [Akka](http://akka.io/).
+
+As data storage we choose [MongoDB](http://www.mongodb.org/).
+
+Back-end tasks (dependencies, compilation, testing, execution, etc) are performed using [SBT](http://www.scala-sbt.org/).
 
 ### Front-end
 
-**[NodeJS with NPM](http://nodejs.org/)**
+Front-end is based on HTML, JavaScript and CSS.
+There is no server side rendering.
+Whole front-end is deployed to the browser as static pages and uses REST JSON to obtain data from the server.
 
-**[Grunt](http://gruntjs.com/)**
+To develop the front-end, following needs to be downloaded and installed:
+
+* [Node.js](http://nodejs.org/)</li>
+
+Once Node.js is installed, please run the following to download the rest of programs and dependencies.
 
 ```bash
 npm install -g grunt-cli
-npm install grunt-contrib-watch --save-dev
-```
-
-
-Dependencies
-------------
-
-Front-end dependencies can be installed by running following
-
-```bash
-cd assets
+npm install -g gulp
 npm install
 ```
+
+Front-end tasks (uglification, concatenation, testing, etc) are done using [Node.js](http://nodejs.org/) which, in turn, runs [Bower](http://bower.io/), [Grunt](http://gruntjs.com/) and [Grunt](http://gruntjs.com/).
+
+Additional programs are installed using [Node.js](http://nodejs.org/).
+[Bower](http://bower.io/) is used to download dependencies.
+Testing is performed with [Grunt](http://gruntjs.com/) which, in turn, executes [Jasmine](http://jasmine.github.io/) specs.
+The rest of tasks is done with [Gulp](http://gulpjs.com/.
+
+Compilation
+-----------
+
+https://github.com/sbt/sbt-assembly
+
+To compile front-end code (uglification, concatenation, etc) and execute all tests:
+
+```bash
+gulp
+```
+
+To compile and run tests continuously (on every change):
+
+```bash
+gulp watch
+```
+
 
 Running
 -------
@@ -64,7 +102,6 @@ Unit Tests
 Front-end unit testing:
 
 ```bash
-cd assets
 npm test
 ```
 

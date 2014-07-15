@@ -1,0 +1,79 @@
+<div class="row">
+    <ng-include src="'/assets/html/static/development.tmpl.html'"></ng-include>
+    <div class="col-md-9">
+        <article>
+            <header>
+                <h1>Development: prerequisites</h1>
+            </header>
+            <div>
+                <div class="list-group">
+                    <p>
+                        This application is created using <a href="http://www.scala-lang.org/">Scala</a> and (optionally Java) in the back-end.
+                        Front-end is decoupled from the back-end and based on HTML, JavaScript and CSS.
+                        Communication between the back-end and the front-end is done through the REST API.
+                    </p>
+                    <div id="navs" class="list-group-item">
+                        <h3 class="list-group-item-heading">Back-end</h3>
+                        <div class="list-group-item-text">
+                            <p>
+                                Whole back-end code is based on <a href="http://akka.io/">Akka</a> and is divided into 3 major parts.
+                            </p>
+                            <p>
+                                To develop the back-end, following needs to be downloaded and installed:
+                                <ul>
+                                    <li><a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">JDK</a></li>
+                                    <li><a href="http://www.scala-lang.org/">Scala</a></li>
+                                    <li><a href="http://www.scala-sbt.org/">SBT</a></li>
+                                </ul>
+                            </p>
+                            <p>
+                                Routing is done with <a href="http://spray.io/">Spray</a>.
+                                Spray uses DSL based on <a href="http://www.scala-lang.org/">Scala</a> and uses <a href="http://akka.io/">Akka</a> behind the curtains.
+                            </p>
+                            <p>
+                                Services are done using <a href="http://akka.io/">Akka</a>.
+                            </p>
+                            <p>
+                                As data storage we choose <a href="http://www.mongodb.org/">MongoDB</a>.
+                            </p>
+                            <p>
+                                Back-end tasks (dependencies, compilation, testing, execution, etc) are performed using <a href="http://www.scala-sbt.org/">SBT</a>.
+                            </p>
+                        </div>
+                    </div>
+                    <div id="navsBars" class="list-group-item">
+                        <h3 class="list-group-item-heading">Front-end</h3>
+                        <div class="list-group-item-text">
+                            <p>
+                                Front-end is based on HTML, JavaScript and CSS.
+                                There is no server side rendering.
+                                Whole front-end is deployed to the browser as static pages and uses REST JSON to obtain data from the server.
+                            </p>
+                            <p>
+                                To develop the front-end, following needs to be downloaded and installed:
+                                <ul>
+                                    <li><a href="http://nodejs.org/">Node.js</a></li>
+                                </ul>
+                                Once Node.js is installed, please run the following to download the rest of programs and dependencies.
+                            </p>
+                            <pre>
+npm install -g grunt-cli
+npm install -g gulp
+npm install
+                            </pre>
+                            <p>
+                                Front-end tasks (uglification, concatenation, testing, etc) are done using <a href="http://nodejs.org/">Node.js</a> which, in turn, runs <a href="http://bower.io/">Bower</a>, <a href="http://gruntjs.com/">Grunt</a> and <a href="http://gulpjs.com/">Gulp</a>.
+                            </p>
+                            <p>
+                                Additional programs are installed using <a href="http://nodejs.org/">Node.js</a>.
+                                <a href="http://bower.io/">Bower</a> is used to download dependencies.
+                                Testing is performed with <a href="http://gruntjs.com/">Grunt</a> which, in turn, executes <a href="http://jasmine.github.io/">Jasmine</a> specs.
+                                The rest of tasks is done with <a href="http://gulpjs.com/">Gulp</a>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+</div>

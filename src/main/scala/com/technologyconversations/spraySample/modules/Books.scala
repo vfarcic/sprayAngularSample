@@ -67,7 +67,7 @@ trait BooksRouting extends HttpService with DefaultJsonProtocol {
   val bookRoute = {
     pathPrefix("api" / "v1" / "books") {
       authenticate(auth) { userName =>
-        path(IntNumber) { id =>
+        path("_id" / IntNumber) { id =>
           get {
             onSuccess(booksActor ? BooksActor.Get(id)) { extraction =>
               complete(extraction.asInstanceOf[Book])

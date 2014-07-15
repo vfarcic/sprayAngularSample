@@ -2,19 +2,17 @@
 <html ng-app="mainModule" ng-controller="mainCtrl" id="ng-app">
 <head>
     <title ng-bind="title">My Application</title>
-    <script src="/assets/bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="/assets/bower_components/angular/angular.min.js"></script>
-    <script src="/assets/bower_components/angular-route/angular-route.min.js"></script>
-    <script src="/assets/bower_components/angular-resource/angular-resource.min.js"></script>
-    <script src="/assets/bower_components/bootstrap/docs/assets/js/bootstrap.min.js"></script>
-    <script src="/assets/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-    <script src="/assets/bower_components/ng-table/ng-table.min.js"></script>
-    <script src="/assets/html/main.ctrl.js"></script>
-    <script src="/assets/html/config.ctrl.js"></script>
-    <script src="/assets/html/books/books.ctrl.js"></script>
+    <script src="/assets/javascripts/jquery.min.js"></script>
+    <script src="/assets/javascripts/angular.min.js"></script>
+    <script src="/assets/javascripts/angular-route.min.js"></script>
+    <script src="/assets/javascripts/angular-resource.min.js"></script>
+    <script src="/assets/javascripts/bootstrap.min.js"></script>
+    <script src="/assets/javascripts/ui-bootstrap-tpls.min.js"></script>
+    <script src="/assets/javascripts/ng-table.min.js"></script>
+    <script src="/assets/app.js"></script>
     <link ng-href="/assets/styles/{{theme}}" rel="stylesheet">
 </head>
-<body>
+<body class="skin-blue">
 <ng-include src="'/assets/html/menu.tmpl.html'"></ng-include>
 <div ng-view>
 </div>
