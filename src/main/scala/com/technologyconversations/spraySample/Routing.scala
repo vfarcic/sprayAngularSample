@@ -22,15 +22,17 @@ class RoutingGeneralServiceActor extends Actor
 
   def actorRefFactory = context
   implicit val routingMessageFormat = jsonFormat2(Message)
+
   def receive = runRoute(
     handleExceptions(routingExceptionHandler)
       (assetsRoute ~ logsRoute ~ bookRoute)
   )
+
   implicit def routingExceptionHandler() = ExceptionHandler {
-    case e: IllegalArgumentException => requestUri { uri =>
-      complete(BadRequest, Message(s"Request $uri was NOT completed", "NOK"))
-    }
     case e: ArithmeticException => requestUri { uri =>
+      complete(BadRequest, Message(s"Request $uri was NOT completed. There was some arithmetic problem.", "NOK"))
+    }
+    case e: Exception => requestUri { uri =>
       complete(BadRequest, Message(s"Request $uri was NOT completed", "NOK"))
     }
   }

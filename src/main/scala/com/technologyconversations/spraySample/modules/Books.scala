@@ -1,15 +1,18 @@
 package com.technologyconversations.spraySample.modules
 
-import akka.actor.{Actor, ActorLogging, Props}
+import akka.actor.{ActorRef, Actor, ActorLogging, Props}
 import akka.pattern.ask
 import com.mongodb.casbah.Imports._
 import com.mongodb.casbah.commons.MongoDBObject
 import com.novus.salat._
 import com.novus.salat.global._
-import com.technologyconversations.spraySample.{Settings, Authenticator, Message}
+import com.technologyconversations.spraySample.{DbSupervisor, Settings, Authenticator, Message}
 import spray.httpx.SprayJsonSupport._
 import spray.json.DefaultJsonProtocol
 import spray.routing.HttpService
+import scala.concurrent.duration._
+
+import scala.concurrent.Await
 
 //TODO Test
 case class BookReduced(_id: Int, title: String, link: String)
@@ -57,12 +60,12 @@ trait BooksRouting extends HttpService with DefaultJsonProtocol {
 
   implicit def booksExecutionContext = actorRefFactory.dispatcher
   val auth = new Authenticator(actorRefFactory).basicAuth
-  val booksActor = actorRefFactory.actorOf(Props[BooksActor], "books")
   implicit val booksTimeout = defaultTimeout
   implicit val booksFormat = jsonFormat6(Book)
   implicit val booksReducedFormat = jsonFormat3(BookReduced)
   implicit val booksMessageFormat = jsonFormat2(Message)
-
+  val supervisor = actorRefFactory.actorOf(Props[DbSupervisor], "booksDbSupervisor")
+  val booksActor = Await.result(supervisor ? Props[BooksActor], 5 seconds).asInstanceOf[ActorRef]
 
   val bookRoute = {
     pathPrefix("api" / "v1" / "books") {

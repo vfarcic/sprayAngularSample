@@ -53,28 +53,10 @@ Additional programs are installed using [Node.js](http://nodejs.org/).
 Testing is performed with [Grunt](http://gruntjs.com/) which, in turn, executes [Jasmine](http://jasmine.github.io/) specs.
 The rest of tasks is done with [Gulp](http://gulpjs.com/.
 
-Compilation
------------
-
-https://github.com/sbt/sbt-assembly
-
-To compile front-end code (uglification, concatenation, etc) and execute all tests:
-
-```bash
-gulp
-```
-
-To compile and run tests continuously (on every change):
-
-```bash
-gulp watch
-```
-
-
 Running
 -------
 
-Make sure that MongoDB is up and running on localhost on port 27017.
+Make sure that MongoDB is up and running on localhost port 27017.
 
 ```bash
 mongod
@@ -93,6 +75,21 @@ When you press <ENTER> SBT leaves "triggered restart" and returns to the normal 
 
 ```bash
 sbt ~re-start
+```
+
+Compilation
+-----------
+
+To compile front-end code (uglification, concatenation, etc) and execute all tests:
+
+```bash
+gulp
+```
+
+To compile and run tests continuously (on every change):
+
+```bash
+gulp watch
 ```
 
 
@@ -118,6 +115,11 @@ Tests can be executed continuously on every change to JS files:
 cd assets
 grunt watch
 ```
+
+Production
+----------
+
+https://github.com/sbt/sbt-assembly
 
 
 Presentation (AngularJS & Bootstrap CSS)
