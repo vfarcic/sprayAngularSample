@@ -19,8 +19,11 @@ describe('mainModule controllers', function() {
             it('should be defined', function() {
                 expect(scope.themes).toBeDefined();
             });
-            it('should contain Default', function() {
-                expect(scope.themes).toContain({title: 'Default', css: 'bootstrap.min.css'});
+            it('should contain Slate', function() {
+                expect(scope.themes).toContain({title: 'Slate (used by this application)', css: 'bootstrap_slate.min.css'});
+            });
+            it('should contain Default Bootstrap', function() {
+                expect(scope.themes).toContain({title: 'Default Bootstrap', css: 'bootstrap.min.css'});
             });
             it('should contain Amelia', function() {
                 expect(scope.themes).toContain({title: 'Amelia', css: 'bootstrap_amelia.min.css'});
@@ -36,6 +39,33 @@ describe('mainModule controllers', function() {
             });
             it('should contain Darkly', function() {
                 expect(scope.themes).toContain({title: 'Darkly', css: 'bootstrap_darkly.min.css'});
+            });
+            it('should contain Flatly', function() {
+                expect(scope.themes).toContain({title: 'Flatly', css: 'bootstrap_flatly.min.css'});
+            });
+            it('should contain Journal', function() {
+                expect(scope.themes).toContain({title: 'Journal', css: 'bootstrap_journal.min.css'});
+            });
+            it('should contain Lumen', function() {
+                expect(scope.themes).toContain({title: 'Lumen', css: 'bootstrap_lumen.min.css'});
+            });
+            it('should contain Readable', function() {
+                expect(scope.themes).toContain({title: 'Readable', css: 'bootstrap_readable.min.css'});
+            });
+            it('should contain Simplex', function() {
+                expect(scope.themes).toContain({title: 'Simplex', css: 'bootstrap_simplex.min.css'});
+            });
+            it('should contain Spacelab', function() {
+                expect(scope.themes).toContain({title: 'Spacelab', css: 'bootstrap_spacelab.min.css'});
+            });
+            it('should contain Superhero', function() {
+                expect(scope.themes).toContain({title: 'Superhero', css: 'bootstrap_superhero.min.css'});
+            });
+            it('should contain United', function() {
+                expect(scope.themes).toContain({title: 'United', css: 'bootstrap_united.min.css'});
+            });
+            it('should contain Yeti', function() {
+                expect(scope.themes).toContain({title: 'Yeti', css: 'bootstrap_yeti.min.css'});
             });
         });
 

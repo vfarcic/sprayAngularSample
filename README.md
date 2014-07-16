@@ -83,55 +83,8 @@ The rest of instructions can be obtained from the application itself.
 
 TODO Continue
 
-Compilation
------------
-
-To compile front-end code (uglification, concatenation, etc) and execute all tests:
-
-```bash
-gulp
-```
-
-To compile and run tests continuously (on every change):
-
-```bash
-gulp watch
-```
-
-
-Unit Tests
-----------
-
-Front-end unit testing:
-
-```bash
-npm test
-```
-
-Alternative way of executing tests (without the installation of NPM and Bower dependencies):
-
-```bash
-cd assets
-grunt jasmine
-```
-
-Tests can be executed continuously on every change to JS files:
-
-```bash
-cd assets
-grunt watch
-```
-
-Production
-----------
-
-https://github.com/sbt/sbt-assembly
-
-
 Presentation (AngularJS & Bootstrap CSS)
 ----------------------------------------
-
-**TODO dynamic screens
 
 ### [Validation](http://localhost:8080/page/books)
 
@@ -452,5 +405,13 @@ Installation
 AngularJS Directives (example from https://gist.github.com/tleunen/5277011)
 Try ReactiveMongo
 SEO optimization (https://developers.google.com/webmasters/ajax-crawling/docs/html-snapshot and https://prerender.io/)
-Move README.md to the site
 Write Home Page
+Travis (npm, gulp, sbt)
+Heroku (npm, gulp, sbt)
+JSON mocks with MongoDB
+Minify HTML
+
+Production
+----------
+
+https://github.com/sbt/sbt-assembly

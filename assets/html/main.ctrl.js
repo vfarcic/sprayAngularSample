@@ -7,7 +7,8 @@ angular.module('mainModule', [
 .controller('mainCtrl', ['$scope',
     function ($scope) {
         $scope.themes = [
-            {title: 'Default', css: 'bootstrap.min.css'},
+            {title: 'Slate (used by this application)', css: 'bootstrap_slate.min.css'},
+            {title: 'Default Bootstrap', css: 'bootstrap.min.css'},
             {title: 'Amelia', css: 'bootstrap_amelia.min.css'},
             {title: 'Cerulean', css: 'bootstrap_cerulean.min.css'},
             {title: 'Cosmo', css: 'bootstrap_cosmo.min.css'},
@@ -18,7 +19,6 @@ angular.module('mainModule', [
             {title: 'Lumen', css: 'bootstrap_lumen.min.css'},
             {title: 'Readable', css: 'bootstrap_readable.min.css'},
             {title: 'Simplex', css: 'bootstrap_simplex.min.css'},
-            {title: 'Slate', css: 'bootstrap_slate.min.css'},
             {title: 'Spacelab', css: 'bootstrap_spacelab.min.css'},
             {title: 'Superhero', css: 'bootstrap_superhero.min.css'},
             {title: 'United', css: 'bootstrap_united.min.css'},

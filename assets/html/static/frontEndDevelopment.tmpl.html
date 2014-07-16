@@ -1,0 +1,90 @@
+<div class="row">
+    <ng-include src="'/assets/html/static/frontEnd.tmpl.html'"></ng-include>
+    <div class="col-md-9">
+        <article>
+            <header>
+                <h1>Front-end: Development</h1>
+            </header>
+            <div>
+                <p>
+                    Front-end development is decoupled from the server.
+                    We still need one to server static files (HTML, JavaScript, CSS, images...) so it needs to be running as explained in the <a href="page/static/frontEndRunning">Development: running</a> section.
+                    <a href="http://gulpjs.com/">Gulp</a> will make sure that every time there is any change to the code, all tasks are executed and our change is visible in the browser.
+                </p>
+                <pre>
+gulp watch
+                </pre>
+                <p>
+                    Feel free to change any HTML or JavaScript code.
+                    As soon as the change is saved, <a href="http://gulpjs.com/">Gulp</a> will re-run all tasks.
+                    In case of an error, <a href="http://gulpjs.com/">Gulp</a> will worn us about them.
+                    After <a href="http://gulpjs.com/">Gulp</a> is run successfully, open the screen affected by the change to review them.
+                </p>
+                <p>
+                    Following tasks are run as part of <code>gulp watch</code>:
+                    <ul>
+                        <li>jshint</li>
+                        <li>concat</li>
+                        <li>ngAnnotate</li>
+                        <li>uglify</li>
+                        <li>sourcemaps</li>
+                        <li>jasmine</li>
+                    </ul>
+                    There is a brief description of each of those tasks.
+                    Their execution is very fast and, since they are part of <code>gulp watch</code>, they will all run on every change to the code.
+                </p>
+                <h3>JSHint</h3>
+                <div>
+                    <p>
+                        <a href="http://www.jshint.com/about/">JSHint</a> is a community-driven tool to detect errors and potential problems in JavaScript code and to enforce your team's coding conventions.
+                    </p>
+                    <pre>
+&lt;div class="row"&gt;
+    &lt;div class="col-md-3"&gt;
+        [Left-hand manu goes here]
+    &lt;/div&gt;
+    &lt;div class="col-md-9"&gt;
+        [Screen body goes here]
+    &lt;/div&gt;
+&lt;/div&gt;
+                    </pre>
+                </div>
+                <h3>Concat</h3>
+                <div>
+                    Gulp will <a href="https://www.npmjs.org/package/gulp-concat">concatenate</a> all JavaScript files into app.js.
+                    This way there is no need to include each new JavaScript file into the index.html file.
+                    It is enough to keep the app.js file referenced.
+                    Following is the snipped from the index.html file.
+                </div>
+                <pre>
+&lt;head&gt;
+    &lt;script src="/assets/app.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+                </pre>
+                <h3>NG Annotate</h3>
+                <div>
+                    <a href="https://www.npmjs.org/package/gulp-ng-annotate">NG Annotate</a> adds angularjs dependency injection annotations.
+                    Without it, our code would not work after it gets minified.
+                </div>
+                <h3>Uglify</h3>
+                <div>
+                    <a href="https://github.com/terinjokes/gulp-uglify">Uglify</a> minifies JavaScript files.
+                    Minification is the process of removing all unnecessary characters from source code without changing its functionality.
+                    Minified code is significantly smaller and results in reduced amount of data that needs to be transferred to the client ultimately making web pages load faster.
+                </div>
+                <h3>Source maps</h3>
+                <div>
+                    After the JavaScript code is concatenated and minified, it cannot be debugged without having a relation with original code.
+                    <a href="https://www.npmjs.org/package/gulp-sourcemaps">Source maps</a> fix that problem.
+                </div>
+                <h3>Jasmine</h3>
+                <div>
+                    <a href="http://jasmine.github.io/">Jasmine</a> is a behavior-driven development framework for testing JavaScript code.
+                    We're using it for all our front-end unit tests.
+                    The test code resides in the test/html directory.
+                    Structure of that directory mimics the assets/html so that the relation between the implementation code and tests is clearly established.
+                </div>
+            </div>
+        </article>
+    </div>
+</div>

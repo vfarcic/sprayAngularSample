@@ -47,7 +47,7 @@ describe('booksModule controllers', function() {
 
         describe('openBook function', function() {
             beforeEach(function() {
-                httpBackend.expectGET('/api/v1/books/' + bookId).respond(book);
+                httpBackend.expectGET('/api/v1/books/_id/' + bookId).respond(book);
             });
             it('should call GET /api/v1/books/[BOOK_ID]', function() {
                 scope.openBook(bookId);
@@ -126,7 +126,7 @@ describe('booksModule controllers', function() {
                 spyOn(scope, 'listBooks');
                 spyOn(scope, 'newBook');
                 scope.book = book;
-                httpBackend.expectDELETE('/api/v1/books/' + bookId).respond();
+                httpBackend.expectDELETE('/api/v1/books/_id/' + bookId).respond();
             });
             it('should call DELETE /api/v1/books/[BOOK_ID]', function() {
                 scope.deleteBook();

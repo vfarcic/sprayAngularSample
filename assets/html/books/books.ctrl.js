@@ -9,7 +9,7 @@ angular.module('booksModule', ['ngTable'])
                 });
             };
             $scope.openBook = function(bookId) {
-                $http.get('/api/v1/books/' + bookId).then(function(response) {
+                $http.get('/api/v1/books/_id/' + bookId).then(function(response) {
                     $scope.book = response.data;
                     $scope.originalBook = angular.copy($scope.book);
                 });
@@ -29,7 +29,7 @@ angular.module('booksModule', ['ngTable'])
                 $scope.book = angular.copy($scope.originalBook);
             };
             $scope.deleteBook = function() {
-                $http.delete('/api/v1/books/' + $scope.book._id).then(function() {
+                $http.delete('/api/v1/books/_id/' + $scope.book._id).then(function() {
                     $scope.listBooks();
                     $scope.newBook();
                 });

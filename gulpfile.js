@@ -27,5 +27,5 @@ gulp.task('test', function() {
 });
 
 gulp.task('watch', ['test', 'js'], function() {
-   gulp.watch(['assets/html/**/*.js', 'test/html/**/*Spec*.js'], ['test', 'js']);
+   gulp.watch(['assets/html/**/*.js', 'test/html/**/*.spec.js'], ['test', 'js']);
 });
