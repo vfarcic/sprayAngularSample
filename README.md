@@ -15,9 +15,9 @@ Whole back-end code is based on [Akka](http://akka.io/) and is divided into 3 ma
 
 To develop the back-end, following needs to be downloaded and installed:
 
-* [JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html)</li>
-* [Scala](http://www.scala-lang.org/)</li>
-* [SBT](http://www.scala-sbt.org/)</li>
+* [JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+* [Scala](http://www.scala-lang.org/)
+* [SBT](http://www.scala-sbt.org/)
 
 Routing is done with [Spray](http://spray.io/).
 Spray uses DSL based on [Scala](http://www.scala-lang.org/) and uses [Akka](http://akka.io/) behind the curtains.
@@ -36,7 +36,7 @@ Whole front-end is deployed to the browser as static pages and uses REST JSON to
 
 To develop the front-end, following needs to be downloaded and installed:
 
-* [Node.js](http://nodejs.org/)</li>
+* [Node.js](http://nodejs.org/)
 
 Once Node.js is installed, please run the following to download the rest of programs and dependencies.
 
@@ -56,26 +56,32 @@ The rest of tasks is done with [Gulp](http://gulpjs.com/.
 Running
 -------
 
-Make sure that MongoDB is up and running on localhost port 27017.
+To run the application in development mode we need to start the [MongoDB](http://www.mongodb.org/) and run the application using SBT.
+
+### MongoDB
+
+We'll start [MongoDB](http://www.mongodb.org/) using default settings.
 
 ```bash
 mongod
 ```
 
-To run the application execute:
+### SBT
 
-```bash
-sbt run
-```
-
-Application can be run in "triggered restart" mode.
-Your application starts up and SBT watches for changes in your source (or resource) files.
-If a change is detected SBT recompiles the required classes and sbt-revolver automatically restarts your application.
-When you press <ENTER> SBT leaves "triggered restart" and returns to the normal prompt keeping your application running.
+The application is already configured to use [SBT Revolver](https://github.com/spray/sbt-revolver).
+It is a plugin for SBT enabling a super-fast development turnaround for Scala applications.
+Whenever any part of the code changes, [SBT Revolver](https://github.com/spray/sbt-revolver) will recompile that change and we'll see the result almost instantly.
+There is no need for any additional task to be performed (packaging, deployment, etc).
 
 ```bash
 sbt ~re-start
 ```
+
+With [MongoDB](http://www.mongodb.org/) and [SBT Revolver](https://github.com/spray/sbt-revolver) up and running, we can see the application by opening [http://localhost:8080/](http://localhost:8080/).
+The rest of instructions can be obtained from the application itself.
+
+
+TODO Continue
 
 Compilation
 -----------
@@ -317,7 +323,7 @@ implicit def routingExceptionHandler() = ExceptionHandler {
 ```
 
 [Books.scala]
-```
+```scala
   ...
   } ~ path("exception") {
     complete {
@@ -325,6 +331,20 @@ implicit def routingExceptionHandler() = ExceptionHandler {
       Message("Request completed", "OK")
     }
     ...
+```
+
+[DbSupervisor.scala]
+```scala
+  override val supervisorStrategy = OneForOneStrategy(maxNrOfRetries = 10, withinTimeRange = 1 minute) {
+    case e: MongoTimeoutException =>
+      log.error(e, "Something terrible happened!!!!!!!!!!")
+      log.error("Resuming the actor...")
+      Resume
+    case e: Exception =>
+      log.error(e, "Something terrible happened and we don't even know what it is!!!!!!!!!")
+      log.error("Escalating...")
+      Escalate
+  }
 ```
 
 ### Logging
@@ -433,3 +453,4 @@ AngularJS Directives (example from https://gist.github.com/tleunen/5277011)
 Try ReactiveMongo
 SEO optimization (https://developers.google.com/webmasters/ajax-crawling/docs/html-snapshot and https://prerender.io/)
 Move README.md to the site
+Write Home Page
