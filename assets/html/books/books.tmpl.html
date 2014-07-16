@@ -40,10 +40,10 @@
                 </div>
                 <div class="form-group" ng-class="cssClass(bookForm.price)">
                     <label for="bookPrice">Price</label>
-                    <input id="bookPrice" name="price" class="form-control" type="number" ng-model="book.price" placeholder="Book Price" required="true" ng-pattern="pricePattern()">
+                    <input id="bookPrice" name="price" class="form-control" ng-model="book.price" placeholder="Book Price" required="true" ng-pattern="pricePattern()">
                 </div>
                 <div class="help-block" ng-show="bookForm.price.$error.pattern">
-                    Price must be any number of digits followed with dot and two digits (i.e. 1223.45)
+                    Price must be any number of digits followed optional with dot and more digits (i.e. 123.45, 123., 123, etc).
                 </div>
                 <button class="btn btn-primary" id="saveBook" ng-class="cssClassButton(bookForm)" ng-disabled="!isValid(bookForm)" ng-click="saveBook()" type="button">Save</button>
                 <button class="btn btn-primary" id="revertBook" ng-disabled="!canRevertBook()" ng-click="revertBook()" type="button">Revert</button>

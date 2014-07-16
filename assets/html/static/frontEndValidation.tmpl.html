@@ -1,0 +1,111 @@
+<div class="row">
+    <ng-include src="'/assets/html/static/frontEnd.tmpl.html'"></ng-include>
+    <div class="col-md-9">
+        <article>
+            <header>
+                <h1>Front-end: Validation</h1>
+            </header>
+            <div>
+                <p>
+                    Front-end validation can be performed by specifying the type of the field (i.e. <code>type="number"</code>, <code>required="true"</code>, etc) or by using AngularJS arguments (i.e. <code>ng-pattern="pricePattern()"</code>, <code>ng-disabled="!canDeleteBook()"</code>, etc).
+                    For more information on HTML tags please visit the <a href="http://www.w3schools.com/tags/">w3schools</a>.
+                    For more information on Angular JS directives please visit the <a href="https://docs.angularjs.org/api/ng/directive">directive components in ng</a>.
+                </p>
+                <h3>HTML validation</h3>
+                <p>
+                    In many cases, HTML validation is enough and there is no reason to employ AngularJS directives.
+                </p>
+                <p>
+                    Following snippet was taken from the <strong>books.tmpl.html</strong> file.
+                    It illustrates validations that can be done using the HTML.
+                </p>
+                <pre>
+&lt;input id="bookId" name="bookId" class="form-control" type="number" ng-model="book._id" placeholder="Book ID" required="true"&gt;
+                </pre>
+                <p>
+                    By specifying <code>type="number"</code> and <code>required="true"</code> input field will be invalid unless some value is specified and it is a number.
+                    Try it out by going to the <a href="/page/books">Books screen</a>.
+                    Select a book of click the <strong>New Book</strong> link to create a new one.
+                    In either case, if the ID is absent or it contains an non-number character, field will be marked in red.
+                </p>
+                <h3>AngularJS validation</h3>
+                <p>
+                    When HTML validation does not produce the desired result, AngularJS can be used.
+                </p>
+                <p>
+                    Following snippet was taken from the <strong>books.tmpl.html</strong> file.
+                    It illustrates validations that can be done using the AngularJS.
+                </p>
+                <pre>
+&lt;input id="bookPrice" name="price" class="form-control" ng-model="book.price" placeholder="Book Price" required="true" ng-pattern="pricePattern()"&gt;
+                </pre>
+                <p>
+                    By specifying <code>ng-pattern="pricePattern()"</code> whenever there value of that input field changes, it will be validated using the <strong>pricePattern</strong> function.
+                </p>
+                <p>
+                    Following snippet was taken from the <strong>books.ctrl.js</strong> file.
+                    It contains the function used in the example above.
+                </p>
+                <pre>
+$scope.pricePattern = function() {
+    return (/^[\d]+\.*(\d)*$/);
+};
+                </pre>
+                <p>
+                    This function returns an regular expression. At first, regular expressions might look overwhelming.
+                    However, they provide very powerful ways to validate any data.
+                    This particular function verifies that there is at least one digit <code>[\d]+</code>, followed by optional dot <code>\.*</code> and with optional digits representing decimal values <code>(\d)*</code>.
+                    Please visit the <a href="http://www.regular-expressions.info/">regular expressions</a> for more info.
+                </p>
+                <p>
+                    Bootstrap CSS will mark in red any input field that has an invalid value.
+                    However, it is often useful to provide additional information related to the validation failure.
+                </p>
+                <p>
+                    Following snippet was taken from the <strong>books.tmpl.html</strong> file.
+                    It contains the message that becomes visible only when the price is invalid.
+                </p>
+                <pre>
+&lt;div class="help-block" ng-show="bookForm.price.$error.pattern"&gt;
+    Price must be any number of digits followed optional with dot and more digits (i.e. 123.45, 123., 123, etc).
+&lt;/div&gt;
+                </pre>
+                <p>
+                    In this example, we are displaying the error message only when the price input field has an pattern error.
+                </p>
+                <p>
+                    More over, it is often useful to enable or disable some action elements depending on the result of the validation.
+                    For example, we can disable saving data when the form is invalid.
+                </p>
+                <p>
+                    Following snippet was taken from the <strong>books.tmpl.html</strong> file.
+                    It disables the button that saves the book data by sending an JSON request to the server.
+                </p>
+                <pre>
+&lt;button class="btn btn-primary" id="saveBook" ng-class="cssClassButton(bookForm)" ng-disabled="!isValid(bookForm)" ng-click="saveBook()" type="button"&gt;Save&lt;/button&gt;
+                </pre>
+                <p>
+                    <code>ng-disabled</code> disables the button whenever <code>isValid</code> function returns <code>true</code>.
+                </p>
+                <p>
+                    Following snippet was taken from the <strong>books.ctrl.js</strong> file.
+                    It contains the function used in the example above.
+                </p>
+                <pre>
+$scope.isValid = function(ngModelController) {
+    return ngModelController.$valid && !angular.equals($scope.book, $scope.originalBook);
+};
+                </pre>
+                <p>
+                    If <code>ngModelController</code> parameter is invalid (we're passing the whole form as this parameter) or when the data is unchanged (book is the same as the originalBook).
+                    The button is enabled only when both conditions are fulfilled.
+                </p>
+                <p>
+                    Keep in mind that in many cases client side validations are not enough.
+                    They are not secured and can be hacked easily.
+                    Front-end validations should be accompanied with <a href="/page/static/backEndValidation">back-end validations</a>.
+                </p>
+            </div>
+        </article>
+    </div>
+</div>

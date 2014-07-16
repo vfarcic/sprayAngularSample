@@ -86,39 +86,6 @@ TODO Continue
 Presentation (AngularJS & Bootstrap CSS)
 ----------------------------------------
 
-### [Validation](http://localhost:8080/page/books)
-
-Required (i.e. price), pattern (i.e. price), disabled (i.e. Save)...
-
-[books.tmpl.html]
-```html
-<div class="form-group" ng-class="cssClass(bookForm.price)">
-    <label for="bookPrice">Price</label>
-    <input id="bookPrice" name="price" class="form-control" type="number" ng-model="book.price" placeholder="Book Price" required="true" ng-pattern="pricePattern()">
-</div>
-<div class="help-block" ng-show="bookForm.price.$error.pattern">
-    Price must be any number of digits followed with dot and two digits (i.e. 1223.45)
-</div>
-<button class="btn btn-primary" id="saveBook" ng-class="cssClassButton(bookForm)" ng-disabled="!isValid(bookForm)" ng-click="saveBook()" type="button">Save</button>
-```
-
-[books.ctrl.js]
-```javascript
-$scope.pricePattern = function() {
-    return (/^[\d]+\.*(\d)*$/);
-};
-$scope.isValid = function(ngModelController) {
-    return ngModelController.$valid && !angular.equals($scope.book, $scope.originalBook);
-};
-```
-
-[Book.scala}
-```scala
-case class Book(_id: Int, image: String, title: String, author: String, price: Double, link: String) {
-  require(_id > 0)
-}
-```
-
 **TODO Display the error modal**
 
 ### [Invocation of services](http://localhost:8080/page/books)
@@ -411,7 +378,18 @@ Heroku (npm, gulp, sbt)
 JSON mocks with MongoDB
 Minify HTML
 
+
 Production
 ----------
 
 https://github.com/sbt/sbt-assembly
+
+
+### [Validation](http://localhost:8080/page/books)
+
+[Book.scala}
+```scala
+case class Book(_id: Int, image: String, title: String, author: String, price: Double, link: String) {
+  require(_id > 0)
+}
+```
