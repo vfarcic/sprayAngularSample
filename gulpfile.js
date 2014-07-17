@@ -5,6 +5,7 @@ var ngAnnotate = require('gulp-ng-annotate');
 var sourcemaps = require('gulp-sourcemaps');
 var jasmine = require('gulp-jasmine');
 var jshint = require('gulp-jshint');
+var less = require('gulp-less');
 require('jshint-stylish');
 require('gulp-grunt')(gulp);
 

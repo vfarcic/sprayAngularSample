@@ -86,8 +86,6 @@ TODO Continue
 Presentation (AngularJS & Bootstrap CSS)
 ----------------------------------------
 
-**TODO Display the error modal**
-
 ### [Invocation of services](http://localhost:8080/page/books)
 
 Async $http in books.ctrl.js (REST/JSON).
@@ -104,6 +102,8 @@ $scope.saveBook = function() {
 };
 ```
 
+**TODO Display the error modal**
+
 ### [Personalization](http://localhost:8080/page/books)
 
 Go to any page and choose any item from the Themes menu drop-down.
@@ -115,23 +115,6 @@ More themes (and variation) can be found in [{wrap}bootstrap](https://wrapbootst
 [config.ctrl.js]
 ```javascript
 $locationProvider.html5Mode(true);
-```
-
-### [Multi channel](http://localhost:8080/page/books)
-
-Bootstrap grid system...
-
-[books.tmpl.html]
-```javascript
-<div class="container-fluid" ng-controller="booksCtrl">
-    <div class="row">
-        <div class="col-md-4">
-            ...
-        </div>
-        <div class="col-md-8">
-            ...
-        </div>
-    </div>
 ```
 
 Data and Backend (Mongo DB)
