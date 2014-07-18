@@ -1,0 +1,82 @@
+<div class="row">
+    <ng-include src="'/assets/html/static/frontEnd.tmpl.html'"></ng-include>
+    <div class="col-md-9">
+        <article>
+            <header>
+                <h1>Front-end: Services</h1>
+            </header>
+            <div>
+                <div class="list-group">
+                    <p>
+                        Front-end is communicating with the server using the AngularJS <a href="https://docs.angularjs.org/api/ng/service/$http">$http</a> service.
+                    </p>
+                    <div id="router" class="list-group-item">
+                        <h3 class="list-group-item-heading">HTTP GET</h3>
+                        <div class="list-group-item-text">
+                            <p>
+                                HTTP GET is used to retrieve data from the server.
+                                <a href="/page/books">Books</a> example has two examples of the usage of <a href="https://docs.angularjs.org/api/ng/service/$http#get">$http.get</a>.
+                                Following example is a snippet that retrieves the list of all books.
+                            </p>
+                            <p>
+                                Before writing the actual code that retrieves all books, we should write tests.
+                                Following snippet was taken from books.ctrl.spec.js.
+                            </p>
+                            <pre>
+describe('openBook function', function() {
+    beforeEach(function() {
+        httpBackend.expectGET('/api/v1/books/_id/' + bookId).respond(book);
+    });
+    it('should call GET /api/v1/books/[BOOK_ID]', function() {
+        scope.openBook(bookId);
+        httpBackend.flush();
+    });
+    it('should set value to the book variable', function() {
+        scope.book = {};
+        scope.openBook(bookId);
+        httpBackend.flush();
+        expect(scope.book).toEqual(book);
+    });
+    it('should set value to the originalBook variable', function() {
+        scope.originalBook = {};
+        scope.openBook(bookId);
+        httpBackend.flush();
+        expect(scope.originalBook).toEqual(book);
+    });
+});
+                            </pre>
+                            <ng-include src="'/assets/html/static/jasmineUnitTestsBefore.tmpl.html'"></ng-include>
+                            <p>
+                                First we're setting up the mock HTTP service that expects our function to retrieve the book.
+                                If this expectation is not fulfilled when <code>flush</code> is called, test will fail.
+                            </p>
+                            <p>
+                                In the first specification we're verifying that HTTP call is made.
+                                The second specification verifies that the book retrieved from the server is stored in the scope variable <strong>book</strong>.
+                                The last specification verifies that the function creates a copy of the retrieved book and stores it in the scope variable <strong>originalBook</strong>.
+                                Scope variable <strong>book</strong> is used to bind it to the HTML form fields.
+                                Scope variable <strong>originalBook</strong> is used to check whether there are any changes in the <strong>book</strong> and for the function that reverts changes done to the <strong>book</strong>.
+                            </p>
+                            <p>
+                                Next, we should write the implementation code. Following snipped was taken from books.ctrl.js.
+                            </p>
+                            <pre>
+$scope.openBook = function(bookId) {
+    $http.get('/api/v1/books/_id/' + bookId).then(function(response) {
+        $scope.book = response.data;
+        $scope.originalBook = angular.copy($scope.book);
+    });
+};
+                            </pre>
+                            <ng-include src="'/assets/html/static/jasmineUnitTestsAfter.tmpl.html'"></ng-include>
+                            <p>
+                                Please consult books.ctrl.spec.js and books.ctrl.js for the complete tests and the implementation code.
+                                Please consult AngularJS <a href="https://docs.angularjs.org/api/ngRoute/provider/$routeProvider">routeProvider</a> for more info.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+</div>

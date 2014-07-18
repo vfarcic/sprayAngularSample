@@ -88,19 +88,7 @@ Presentation (AngularJS & Bootstrap CSS)
 
 ### [Invocation of services](http://localhost:8080/page/books)
 
-Async $http in books.ctrl.js (REST/JSON).
-
-[books.ctrl.js]
-```javascript
-$scope.listBooks = function() {
-    $http.get('/api/v1/books').then(function(response) {
-        $scope.books = response.data;
-    });
-};
-$scope.saveBook = function() {
-    $http.put('/api/v1/books', $scope.book);
-};
-```
+**TODO Binding (before services)**
 
 **TODO Display the error modal**
 
@@ -359,6 +347,7 @@ Write Home Page
 Travis (npm, gulp, sbt)
 Heroku (npm, gulp, sbt)
 JSON mocks with MongoDB
+[Embeeded Mongo](https://github.com/flapdoodle-oss/de.flapdoodle.embed.mongo)
 Minify HTML
 
 
