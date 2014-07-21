@@ -88,8 +88,6 @@ Presentation (AngularJS & Bootstrap CSS)
 
 ### [Invocation of services](http://localhost:8080/page/books)
 
-Finish http DELETE PUT and DELETE
-
 **TODO Binding (before services)**
 
 **TODO Display the error modal**

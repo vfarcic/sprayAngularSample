@@ -10,12 +10,12 @@
                     <p>
                         Front-end is communicating with the server using the AngularJS <a href="https://docs.angularjs.org/api/ng/service/$http">$http</a> service.
                     </p>
-                    <div id="router" class="list-group-item">
+                    <div id="httpGet" class="list-group-item">
                         <h3 class="list-group-item-heading">HTTP GET</h3>
                         <div class="list-group-item-text">
                             <p>
                                 HTTP GET is used to retrieve data from the server.
-                                <a href="/page/books">Books</a> example has two examples of the usage of <a href="https://docs.angularjs.org/api/ng/service/$http#get">$http.get</a>.
+                                <a href="/page/books">Books</a> have two examples of the usage of <a href="https://docs.angularjs.org/api/ng/service/$http#get">$http.get</a>.
                                 Following example is a snippet that retrieves the list of all books.
                             </p>
                             <p>
@@ -72,6 +72,89 @@ $scope.openBook = function(bookId) {
                             <p>
                                 Please consult books.ctrl.spec.js and books.ctrl.js for the complete tests and the implementation code.
                                 Please consult AngularJS <a href="https://docs.angularjs.org/api/ng/service/$http">$http</a> for more info.
+                            </p>
+                        </div>
+                    </div>
+                    <div id="httpPut" class="list-group-item">
+                        <h3 class="list-group-item-heading">HTTP PUT</h3>
+                        <div class="list-group-item-text">
+                            <p>
+                                HTTP PUT is used to send data from the server.
+                                <a href="/page/books">Books</a> have an example of the usage of <a href="https://docs.angularjs.org/api/ng/service/$http#put">$http.put</a>.
+                                Following example is a snippet that sends book to the server.
+                                It is used to both insert new and update existing data.
+                            </p>
+                            <p>
+                                Before writing the actual code that retrieves all books, we should write tests.
+                                Following snippet was taken from books.ctrl.spec.js.
+                            </p>
+                            <pre>
+describe('saveBook function', function() {
+    beforeEach(function() {
+        spyOn(scope, 'listBooks');
+        spyOn(scope, 'newBook');
+        scope.book = book;
+    });
+    it('should call PUT /api/v1/books', function() {
+        httpBackend.expectPUT('/api/v1/books').respond();
+        scope.saveBook();
+        httpBackend.flush();
+    });
+    it('should call listBooks function', function() {
+        httpBackend.expectPUT('/api/v1/books').respond();
+        scope.saveBook();
+        httpBackend.flush();
+        expect(scope.listBooks).toHaveBeenCalled();
+    });
+    it('should call newBook function', function() {
+        httpBackend.expectPUT('/api/v1/books').respond();
+        scope.saveBook();
+        httpBackend.flush();
+        expect(scope.newBook).toHaveBeenCalled();
+    });
+});
+                            </pre>
+                            <ng-include src="'/assets/html/static/jasmineUnitTestsBefore.tmpl.html'"></ng-include>
+                            <p>
+                                First we're creating spies on listBooks and newBook functions.
+                                Since the saveBook is using those functions, we want mock them.
+                                Specifications of those two functions are written separately.
+                                In this case we just need to make sure that those functions are run.
+                            </p>
+                            <p>
+                                In the first specification we're setting up the mock HTTP service that will simulate PUT operation.
+                                When <code>flush</code> is called, specification will fail unless specified PUT operation was not performed (in our case by calling <code>saveBook</code>.
+                                The second specification verifies that the function <code>listBooks</code> has been called.
+                                It updates the list of books each time save is performed.
+                                The last specification is similar to the previous.
+                                It verifies that the function <code>newBook</code> is called.
+                                It clears the form allowing us to insert a new book.
+                            </p>
+                            <p>
+                                Next, we should write the implementation code. Following snipped was taken from books.ctrl.js.
+                            </p>
+                            <pre>
+$scope.saveBook = function() {
+    $http.put('/api/v1/books', $scope.book).then(function() {
+        $scope.listBooks();
+        $scope.newBook();
+    });
+};
+                            </pre>
+                            <ng-include src="'/assets/html/static/jasmineUnitTestsAfter.tmpl.html'"></ng-include>
+                            <p>
+                                Please consult books.ctrl.spec.js and books.ctrl.js for the complete tests and the implementation code.
+                                Please consult AngularJS <a href="https://docs.angularjs.org/api/ng/service/$http">$http</a> for more info.
+                            </p>
+                        </div>
+                    </div>
+                    <div id="httpDelete" class="list-group-item">
+                        <h3 class="list-group-item-heading">HTTP DELETE</h3>
+                        <div class="list-group-item-text">
+                            <p>
+                                HTTP DELETE is used to send to the server an request to delete something.
+                                <a href="/page/books">Books</a> have an example of the usage of <a href="https://docs.angularjs.org/api/ng/service/$http#delete">$http.delete</a>.
+                                It is very similar to the example with the <a href="https://docs.angularjs.org/api/ng/service/$http#put">$http.put</a>
                             </p>
                         </div>
                     </div>
