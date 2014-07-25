@@ -88,6 +88,10 @@ Presentation (AngularJS & Bootstrap CSS)
 
 ### [Invocation of services](http://localhost:8080/page/books)
 
+**TODO Implement response consistent structure**
+
+
+
 **TODO Binding (before services)**
 
 **TODO Display the error modal**
